@@ -35,7 +35,7 @@ public class ScrapYardController {
 	
 	@GetMapping(BOOK_RESOURCE + "/ping")
 	public ResponseEntity<String> pong() {
-		return ResponseEntity.ok("pong Book...");
+		return ResponseEntity.ok("pong scrapYard...");
 	}
 
 	
