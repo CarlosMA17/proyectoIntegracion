@@ -1,9 +1,9 @@
-package com.scrappinggo.entity;
+package com.app.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,7 +11,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -20,27 +19,21 @@ import lombok.Data;
 //@ToString(exclude = "writers")
 //@EqualsAndHashCode(exclude = "writers")
 @Entity
-@Table(name = "cars")
-public class Car {
-
+@Table(name="parts_category")
+public class PartCategory {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long carId;
+    private Long CategoryId;
 
-	 @OneToMany(
-				mappedBy = "car",
+	/*@OneToMany(
+				mappedBy = "partCategory",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 			)
-	@JsonManagedReference
-	private List<Part> parts = new ArrayList<>();
+	@JsonBackReference
+	private List<Part> parts = new ArrayList<>();*/
 
 	@Column(nullable = false, length = 50)
-	private String brand;
-	
-	@Column(nullable = false, length = 50)
-	private String model;
-	
-	@Column(nullable = false, length = 50)
-	private String engine;
+	private String categoryName;
+
 }

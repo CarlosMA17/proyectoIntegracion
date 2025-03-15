@@ -1,9 +1,11 @@
-package com.scrappinggo.entity;
+package com.app.entity;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -19,21 +22,28 @@ import lombok.Data;
 //@ToString(exclude = "writers")
 //@EqualsAndHashCode(exclude = "writers")
 @Entity
-@Table(name="parts_category")
-public class PartCategory {
+@Table(name = "cars")
+public class Car {
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long CategoryId;
+    private Long carId;
 
-	/*@OneToMany(
-				mappedBy = "partCategory",
+	 @OneToMany(
+				mappedBy = "car",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 			)
-	@JsonBackReference
-	private List<Part> parts = new ArrayList<>();*/
+	@JsonManagedReference
+	private List<Part> parts = new ArrayList<>();
+
 
 	@Column(nullable = false, length = 50)
-	private String categoryName;
-
+	private String brand;
+	
+	@Column(nullable = false, length = 50)
+	private String model;
+	
+	@Column(nullable = false, length = 50)
+	private String engine;
 }

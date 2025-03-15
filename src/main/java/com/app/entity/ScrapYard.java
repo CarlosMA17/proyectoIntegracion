@@ -1,4 +1,4 @@
-package com.scrappinggo.entity;
+package com.app.entity;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -14,40 +14,34 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
 import lombok.Data;
 
 @Data
 //@ToString(exclude = "writers")
 //@EqualsAndHashCode(exclude = "writers")
 @Entity
-@Table(name = "parts")
-public class Part {
+@Table(name="scrap_yards")
+public class ScrapYard {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long partId;
+    private Long scrapYardId;
+
+	@OneToMany(
+			mappedBy = "scrapYardId",
+		cascade = CascadeType.ALL,
+		orphanRemoval = true
+		)
+	@JsonManagedReference
+    private Set<ScrapYardParts> scrapYardParts = new LinkedHashSet<>();
 
 	@Column(nullable = false, length = 50)
 	private String name;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "car", nullable = true)
-	@JsonBackReference
-    private Car car;
-
-	@ManyToMany( cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-			mappedBy = "parts")
-    @JsonManagedReference
-    private Set<ScrapYard> scrapYards = new LinkedHashSet<>();
 	
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "category", nullable = false)
-	@JsonManagedReference
-    private PartCategory category;
-	
+	@Column(nullable = false, length = 50)
+	private String location;
 }

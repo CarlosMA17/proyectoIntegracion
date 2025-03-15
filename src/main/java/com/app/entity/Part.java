@@ -1,9 +1,10 @@
-package com.scrappinggo.entity;
+package com.app.entity;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,34 +14,43 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
 import lombok.Data;
 
 @Data
 //@ToString(exclude = "writers")
 //@EqualsAndHashCode(exclude = "writers")
 @Entity
-@Table(name="scrap_yards")
-public class ScrapYard {
+@Table(name = "parts")
+public class Part {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long scrapYardId;
-
-	@ManyToMany(fetch = FetchType.LAZY,
-			cascade = {CascadeType.PERSIST, CascadeType.MERGE}
-    		)
-    @JoinTable(name = "parts_scrap_yard",
-		   joinColumns = @JoinColumn(name = "fk_scrap_yard_id"),
-		   inverseJoinColumns = @JoinColumn(name = "fk_part_id"))
-    @JsonBackReference
-    private Set<Part> parts = new LinkedHashSet<>();
+    private Long partId;
 
 	@Column(nullable = false, length = 50)
 	private String name;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "car", nullable = true)
+	@JsonBackReference
+    private Car car;
+
+	@OneToMany(
+			mappedBy = "partId",
+		cascade = CascadeType.ALL,
+		orphanRemoval = true
+		)
+	@JsonManagedReference
+    private Set<ScrapYardParts> scrapYardParts = new LinkedHashSet<>();
 	
-	@Column(nullable = false, length = 50)
-	private String location;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "category", nullable = false)
+	@JsonManagedReference
+    private PartCategory category;
+	
 }
