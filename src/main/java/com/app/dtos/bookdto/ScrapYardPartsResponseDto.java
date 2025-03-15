@@ -8,9 +8,12 @@ import lombok.NoArgsConstructor;
 public class ScrapYardPartsResponseDto {
 
 	private String partName;
+	private String carBrand;
+	private String carModel;
+	private String carEngine;
 	private String scrapYardName;
+	private String scrapYardLocation;
 	private float price;
-	private boolean stock;
 	private int wearLevel;
-	//private String carName;
+	private String category;
 }

@@ -26,29 +26,49 @@ public class ScrapYardParts implements Serializable {
 	
 	private int wearLevel;
 	private float price;
-	private boolean stock;
 	
 	public ScrapYardParts() {}
 	
-	public ScrapYardParts(Part partId, ScrapYard scrapYardId, int wearLevel, float price, boolean stock) {
+	public ScrapYardParts(Part partId, ScrapYard scrapYardId, int wearLevel, float price) {
 		super();
 		this.partId = partId;
 		this.scrapYardId = scrapYardId;
 		this.wearLevel = wearLevel;
 		this.price = price;
-		this.stock = stock;
 	}
 
-	public String getPartId() {
+	public String getCarBrand() {
+		return partId.getCar().getBrand();
+	}
+	
+	public String getCarModel() {
+		return partId.getCar().getModel();
+	}
+	
+	public String getCarEngine() {
+		return partId.getCar().getEngine();
+	}
+	
+	public String getPartName() {
 		return partId.getName();
 	}
+	
+	
+	public String getcategory() {
+		return partId.getCategory().getCategoryName();
+	}
+
 
 	public void setPartId(Part partId) {
 		this.partId = partId;
 	}
 
-	public String getScrapYardId() {
+	public String getScrapYardName() {
 		return scrapYardId.getName();
+	}
+	
+	public String getScrapYardLocation() {
+		return scrapYardId.getLocation();
 	}
 
 	public void setScrapYardId(ScrapYard scrapYardId) {
@@ -70,14 +90,5 @@ public class ScrapYardParts implements Serializable {
 	public void setPrice(float price) {
 		this.price = price;
 	}
-
-	public boolean isStock() {
-		return stock;
-	}
-
-	public void setStock(boolean stock) {
-		this.stock = stock;
-	}
-	
 	
 }

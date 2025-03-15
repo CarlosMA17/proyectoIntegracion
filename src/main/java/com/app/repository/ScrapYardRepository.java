@@ -1,5 +1,6 @@
 package com.app.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,5 @@ import com.app.entity.ScrapYardParts;
 @Repository
 public interface ScrapYardRepository extends JpaRepository<ScrapYardParts, PartId> {
 
-	//Optional<ScrapYard> findByName(String name);
+	List<ScrapYardParts> findByPartIdNameStartingWith(String partName);
 }

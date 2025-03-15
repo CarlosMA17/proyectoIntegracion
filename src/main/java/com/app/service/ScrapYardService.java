@@ -16,4 +16,7 @@ public interface ScrapYardService {
 	void deleteBook(Long bookId);
 	
 	ScrapYardResponseDto addWriterToBook(Long bookId, Long writerId);*/
+
+
+	List<ScrapYardPartsResponseDto> getPartByName(String partName);
 }

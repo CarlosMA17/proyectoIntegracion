@@ -22,16 +22,17 @@ import com.app.dtos.bookdto.ScrapYardRequestDto;
 import com.app.service.ScrapYardServiceImpl;
 
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/api")
 public class ScrapYardController {
 
 	private static final String BOOK_RESOURCE = "/scrapyards";
-	private static final String BOOK_ID_PATH = BOOK_RESOURCE + "/{scrapyardId}";
+	private static final String BOOK_ID_PATH = BOOK_RESOURCE + "/search";
 	
 	@Autowired
-	ScrapYardServiceImpl bookService;
+	ScrapYardServiceImpl scrapYardService;
 	
 	@GetMapping(BOOK_RESOURCE + "/ping")
 	public ResponseEntity<String> pong() {
@@ -53,24 +54,24 @@ public class ScrapYardController {
 	
 	@GetMapping(value = BOOK_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getAllBooks() {
-		List<ScrapYardPartsResponseDto> scrapYardParts = bookService.getAllBooks();
+		List<ScrapYardPartsResponseDto> scrapYardParts = scrapYardService.getAllBooks();
 
 		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
 				HttpStatus.OK.value(), scrapYardParts);
 		return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-	/*@GetMapping(value = BOOK_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<BookResponseDto>> getBookById(@PathVariable Long bookId) {		
-		BookResponseDto book = bookService.getBookById(bookId);
+	@GetMapping(value = BOOK_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getBookById(@PathParam(value = "partName") String partName) {		
+		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartByName(partName);
 		
-		ApiResponseDto<BookResponseDto> response = new ApiResponseDto("Book fetched successfully",
-				HttpStatus.OK.value(), book);
+		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
+				HttpStatus.OK.value(), parts);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
-	@PutMapping(value = BOOK_ID_PATH, 
+	/*@PutMapping(value = BOOK_ID_PATH, 
 				consumes = MediaType.APPLICATION_JSON_VALUE, 
 				produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<BookResponseDto>> updateBook(@Valid @PathVariable Long bookId, 

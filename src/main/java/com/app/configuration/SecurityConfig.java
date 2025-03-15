@@ -49,7 +49,8 @@ public class SecurityConfig {
 																		"/doc/swagger-ui.html", 
 																		"/v3/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/writers/onlycreate").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/api/scrapyards").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/api/scrapyards").hasRole("USER")
 							// .requestMatchers(HttpMethod.GET, "/api/writers/onlycreate").hasAuthority("CREATE")
 				.anyRequest().authenticated()
 				)

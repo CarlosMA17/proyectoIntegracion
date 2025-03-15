@@ -20,8 +20,5 @@ public interface ScrapYardMapper {
 	
 	// Entity -> Dto
 	
-	@Mapping(source = "partId", target = "partName")
-    @Mapping(source = "scrapYardId", target = "scrapYardName")
-    //@Mapping(source = "carId", target = "carName")
 	ScrapYardPartsResponseDto toResponse(ScrapYardParts scrapYard);
 }

@@ -320,4 +320,5 @@ INSERT INTO parts (name, car, category) VALUES
 
 
 INSERT INTO scrap_yard_parts (part_id, scrap_yard_id, price, stock, wear_level) VALUES
-  (1, 1, 200.00, TRUE, 80);
+  (1, 1, 200.00, TRUE, 80),
+  (1, 2, 30.00, TRUE, 60);

@@ -48,16 +48,24 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		
 	}
 
-	/*@Override
-	public ScrapYardResponseDto getBookById(Long bookId) {
+	@Override
+	public List<ScrapYardPartsResponseDto> getPartByName(String partName) {
 		/*
 		 * Book book = bookRepository.findById(bookId) .orElseThrow(() -> new
 		 * ResourceNotFoundException( String.format(BOOK_NOT_FOUND, bookId)));
 		 */
 		
-		/*Book book = validateAndGetBook(bookId);
+		List<ScrapYardParts> parts = scrapYardRepository.findByPartIdNameStartingWith(partName);
 		
-		return bookMapper.toBookResponse(book);
+		return parts.stream()
+				.map(scrapYardMapper::toResponse)
+				.collect(Collectors.toList());
+	}
+
+	/*private ScrapYard validateAndGetBook(Long id) {
+		return scrapYardRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						String.format(BOOK_NOT_FOUND, id)));
 	}
 
 	@Override
@@ -72,11 +80,6 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		
 	}
 	
-	private ScrapYard validateAndGetBook(Long id) {
-		return bookRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(
-						String.format(BOOK_NOT_FOUND, id)));
-	}
 
 	@Override
 	public ScrapYardResponseDto addWriterToBook(Long bookId, Long writerId) {
