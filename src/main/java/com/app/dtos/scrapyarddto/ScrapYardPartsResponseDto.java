@@ -1,4 +1,4 @@
-package com.app.dtos.bookdto;
+package com.app.dtos.scrapyarddto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ScrapYardPartsResponseDto {
 
-	private long partId;
 	private String partName;
 	private String carBrand;
 	private String carModel;

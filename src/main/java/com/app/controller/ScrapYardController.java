@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dtos.api.ApiResponseDto;
-import com.app.dtos.bookdto.ScrapYardPartsResponseDto;
-import com.app.dtos.bookdto.ScrapYardRequestDto;
+import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
+import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
 import com.app.service.ScrapYardServiceImpl;
 
 import jakarta.validation.Valid;
@@ -35,11 +35,6 @@ public class ScrapYardController {
 	
 	@Autowired
 	ScrapYardServiceImpl scrapYardService;
-	
-	@GetMapping(BOOK_RESOURCE + "/ping")
-	public ResponseEntity<String> pong() {
-		return ResponseEntity.ok("pong scrapYard...");
-	}
 
 	
 	/*@PostMapping(value = BOOK_RESOURCE,
@@ -54,17 +49,24 @@ public class ScrapYardController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);        
 	}*/
 	
+	/**
+	 *  GET ALL PARTS
+	 */
 	@GetMapping(value = BOOK_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getAllBooks() {
-		List<ScrapYardPartsResponseDto> scrapYardParts = scrapYardService.getAllBooks();
+	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getAllParts() {
+		List<ScrapYardPartsResponseDto> scrapYardParts = scrapYardService.getAllParts();
 
 		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
 				HttpStatus.OK.value(), scrapYardParts);
 		return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+	/**
+	 *  GET PART BY ID
+	 * @param partName
+	 */
 	@GetMapping(value = BOOK_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getBookById(@PathParam(value = "partName") String partName) {		
+	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartById(@PathParam(value = "partName") String partName) {		
 		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartByName(partName);
 		
 		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",

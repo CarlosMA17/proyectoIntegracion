@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.dtos.bookdto.ScrapYardPartsResponseDto;
-import com.app.dtos.bookdto.ScrapYardRequestDto;
+import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
+import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
 import com.app.exception.ResourceNotFoundException;
@@ -34,7 +34,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	}*/
 
 	@Override
-	public List<ScrapYardPartsResponseDto> getAllBooks() {
+	public List<ScrapYardPartsResponseDto> getAllParts() {
 		
 		/*
 		 * Book book = bookRepository.findById(bookId) .orElseThrow(() -> new

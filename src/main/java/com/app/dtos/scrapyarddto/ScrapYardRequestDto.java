@@ -1,4 +1,4 @@
-package com.app.dtos.bookdto;
+package com.app.dtos.scrapyarddto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

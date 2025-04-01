@@ -3,10 +3,10 @@ package com.app.mappers.scrapyard;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
+import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
-import com.app.dtos.bookdto.ScrapYardPartsResponseDto;
-import com.app.dtos.bookdto.ScrapYardRequestDto;
 
 @Mapper(componentModel = "spring")
 public interface ScrapYardMapper {

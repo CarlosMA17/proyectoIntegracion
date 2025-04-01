@@ -2,15 +2,14 @@ package com.app.service;
 
 import java.util.List;
 
-import com.app.dtos.bookdto.ScrapYardPartsResponseDto;
-import com.app.dtos.bookdto.ScrapYardRequestDto;
-import com.app.dtos.bookdto.ScrapYardRequestDto;
+import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
+import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
 
 public interface ScrapYardService {
 
 	//ScrapYardResponseDto createBook(ScrapYardRequestDto scrapYardRequestDto);
 	
-	List<ScrapYardPartsResponseDto> getAllBooks();
+	List<ScrapYardPartsResponseDto> getAllParts();
 	/*ScrapYardResponseDto getBookById(Long bookId);
 	ScrapYardResponseDto updateBook(Long bookId, ScrapYardRequestDto scrapYardRequestDto);
 	void deleteBook(Long bookId);
