@@ -51,6 +51,8 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/scrapyards").hasRole("ADMIN")
 				.requestMatchers(HttpMethod.GET, "/api/scrapyards").hasRole("USER")
+				//.requestMatchers(HttpMethod.GET, "/api/scrapyards").permitAll()
+
 							// .requestMatchers(HttpMethod.GET, "/api/writers/onlycreate").hasAuthority("CREATE")
 				.anyRequest().authenticated()
 				)

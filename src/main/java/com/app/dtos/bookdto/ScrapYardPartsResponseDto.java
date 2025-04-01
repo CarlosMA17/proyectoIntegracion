@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ScrapYardPartsResponseDto {
 
+	private long partId;
 	private String partName;
 	private String carBrand;
 	private String carModel;
