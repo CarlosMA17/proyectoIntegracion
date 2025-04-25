@@ -30,8 +30,8 @@ import jakarta.websocket.server.PathParam;
 @CrossOrigin(origins = "http://localhost:5173")
 public class ScrapYardController {
 
-	private static final String BOOK_RESOURCE = "/scrapyards";
-	private static final String BOOK_ID_PATH = BOOK_RESOURCE + "/search";
+	private static final String PART_RESOURCE = "/scrapyards";
+	private static final String PART_ID_PATH = PART_RESOURCE + "/search";
 	
 	@Autowired
 	ScrapYardServiceImpl scrapYardService;
@@ -52,7 +52,7 @@ public class ScrapYardController {
 	/**
 	 *  GET ALL PARTS
 	 */
-	@GetMapping(value = BOOK_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
+	@GetMapping(value = PART_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getAllParts() {
 		List<ScrapYardPartsResponseDto> scrapYardParts = scrapYardService.getAllParts();
 
@@ -65,7 +65,7 @@ public class ScrapYardController {
 	 *  GET PART BY ID
 	 * @param partName
 	 */
-	@GetMapping(value = BOOK_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = PART_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartById(@PathParam(value = "partName") String partName) {		
 		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartByName(partName);
 		

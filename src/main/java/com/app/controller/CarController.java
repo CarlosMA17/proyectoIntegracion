@@ -13,32 +13,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dtos.api.ApiResponseDto;
+import com.app.dtos.carsdtos.CarResponseDto;
 import com.app.dtos.categorydto.CategoryResponseDto;
-import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
+import com.app.service.CarServiceImpl;
 import com.app.service.CategoryServiceImpl;
-import com.app.service.ScrapYardServiceImpl;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:5173")
-public class CategoryController {
+public class CarController {
 	
-	private static final String CATEGORY_RESOURCE = "/categories";
-	private static final String CATEGORY_CAR = CATEGORY_RESOURCE + "/{carId}";
-	
+	private static final String CAR_RESOURCE = "/cars";
+	private static final String CAR_BRAND = CAR_RESOURCE + "/{brand}";
+	private static final String CAR_BRAND_MODEL = CAR_BRAND + "/{model}";
+	private static final String CAR_BRAND_MODEL_MOTOR = CAR_BRAND_MODEL + "/{motor}";
+
+
 	@Autowired
-	CategoryServiceImpl categoryService;
+	CarServiceImpl carService;
+	
+	
 	
 	/**
-	 *  GET ALL CATEGORIES BY CAR
-	 *  @param carID
-	 */
-	@GetMapping(value = CATEGORY_CAR, produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<ApiResponseDto<List<CategoryResponseDto>>> getAllCategories(@PathVariable long carId) {
-		List<CategoryResponseDto> categories = categoryService.getAllCategoriesByCar(carId);
+	 *  GET ALL CATEGORIES
++	 */
+	@GetMapping(value = CAR_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<ApiResponseDto<List<CarResponseDto>>> getAllBrands() {
+		List<CarResponseDto> brands = carService.getAllCars();
 
-		ApiResponseDto<List<CategoryResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
-				HttpStatus.OK.value(), categories);
+		ApiResponseDto<List<CarResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
+				HttpStatus.OK.value(), brands);
 		return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
