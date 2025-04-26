@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -22,8 +23,6 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
-//@ToString(exclude = "writers")
-//@EqualsAndHashCode(exclude = "writers")
 @Entity
 @Table(name = "parts")
 public class Part {
@@ -34,11 +33,11 @@ public class Part {
 
 	@Column(nullable = false, length = 50)
 	private String name;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "car", nullable = true)
-	@JsonBackReference
-    private Car car;
+    
+    @ManyToMany( cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+	mappedBy = "parts")
+	@JsonManagedReference
+    private Set<Car> cars;
 
 	@OneToMany(
 			mappedBy = "partId",

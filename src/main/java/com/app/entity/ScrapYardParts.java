@@ -1,6 +1,8 @@
 package com.app.entity;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,21 +39,10 @@ public class ScrapYardParts implements Serializable {
 		this.price = price;
 	}
 
-	public String getCarBrand() {
-		return partId.getCar().getBrand();
+	public Set<Car> getCars() {
+		return partId.getCars();
 	}
-	
-	public String getCarModel() {
-		return partId.getCar().getModel();
-	}
-	
-	public String getCarEngine() {
-		return partId.getCar().getEngine();
-	}
-	
-	public String getPartName() {
-		return partId.getName();
-	}
+
 	
 	
 	public String getcategory() {
