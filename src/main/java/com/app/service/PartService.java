@@ -6,6 +6,6 @@ import com.app.dtos.partdto.PartResponseDto;
 
 public interface PartService {
 
-	List<PartResponseDto> getAllPartsByCar(Long carId);
+	List<PartResponseDto> getAllPartsByCar(Long carId, Long categoryId);
 
 }

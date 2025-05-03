@@ -18,9 +18,9 @@ import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.service.CategoryServiceImpl;
 import com.app.service.ScrapYardServiceImpl;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173")
 public class CategoryController {
 	
 	private static final String CATEGORY_RESOURCE = "/categories";

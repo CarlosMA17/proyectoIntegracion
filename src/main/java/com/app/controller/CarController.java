@@ -18,9 +18,9 @@ import com.app.dtos.categorydto.CategoryResponseDto;
 import com.app.service.CarServiceImpl;
 import com.app.service.CategoryServiceImpl;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173")
 public class CarController {
 	
 	private static final String CAR_RESOURCE = "/cars";

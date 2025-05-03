@@ -22,7 +22,7 @@ import com.app.service.PartServiceImpl;
 @CrossOrigin(origins = "http://localhost:5173")
 public class PartController {
 	
-	private static final String PART_RESOURCE = "/parts/{carId}";
+	private static final String PART_RESOURCE = "/parts/{carId}/{categoryId}";
 
 
 	@Autowired
@@ -34,8 +34,8 @@ public class PartController {
 	 *  GET ALL PARTS BY CAR
 +	 */
 	@GetMapping(value = PART_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<ApiResponseDto<List<PartResponseDto>>> getAllParts(@PathVariable long carId) {
-		List<PartResponseDto> brands = partService.getAllPartsByCar(carId);
+	public ResponseEntity<ApiResponseDto<List<PartResponseDto>>> getAllParts(@PathVariable long carId, @PathVariable long categoryId) {
+		List<PartResponseDto> brands = partService.getAllPartsByCar(carId, categoryId);
 
 		ApiResponseDto<List<PartResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
 				HttpStatus.OK.value(), brands);

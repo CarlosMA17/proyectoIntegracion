@@ -25,13 +25,13 @@ public class PartCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long CategoryId;
 
-	/*@OneToMany(
-				mappedBy = "partCategory",
+	@OneToMany(
+				mappedBy = "category",
 			cascade = CascadeType.ALL,
 			orphanRemoval = true
 			)
 	@JsonBackReference
-	private List<Part> parts = new ArrayList<>();*/
+	private List<Part> parts = new ArrayList<>();
 
 	@Column(nullable = false, length = 50)
 	private String categoryName;

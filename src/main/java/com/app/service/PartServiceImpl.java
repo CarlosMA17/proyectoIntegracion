@@ -18,8 +18,8 @@ public class PartServiceImpl implements PartService {
 	@Autowired PartMapper partMapper;
 
 	@Override
-	public List<PartResponseDto> getAllPartsByCar(Long carId) {
-		List<Part> parts =  partRepository.findPartsByCarId(carId);
+	public List<PartResponseDto> getAllPartsByCar(Long carId, Long categoryId) {
+		List<Part> parts =  partRepository.findPartsByCarIdAndCategoryId(carId, categoryId);
 		return parts.stream()
 								.map(partMapper::toResponse)
 								.collect(Collectors.toList());

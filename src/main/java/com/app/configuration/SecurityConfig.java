@@ -1,6 +1,7 @@
 package com.app.configuration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.app.jwt.JwtAuthenticationFilter;
 import com.app.service.UserDetailsServiceImpl;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 //aqui se pondran los bean (@ ejemplo entity,service etc)
 //@EnableWebSecurity(debug = true)
@@ -43,7 +47,8 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.cors(Customizer.withDefaults())
 				.authorizeHttpRequests(auth -> 
-												auth.requestMatchers(HttpMethod.GET, 
+												auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+												.requestMatchers(HttpMethod.GET, 
 																		"/api/ping", 
 																		"/doc/swagger-ui/**", 
 																		"/doc/swagger-ui.html", 
@@ -60,6 +65,20 @@ public class SecurityConfig {
 				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 				.httpBasic(Customizer.withDefaults()) // para form user,pw
 				.build();
+	}
+	
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+	    CorsConfiguration configuration = new CorsConfiguration();
+	    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+	    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+	    configuration.setAllowedHeaders(Arrays.asList("*"));
+	    configuration.setAllowCredentials(true);
+
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", configuration);
+
+	    return source;
 	}
 
 	@Bean

@@ -23,7 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	@Override
 	public List<CategoryResponseDto> getAllCategoriesByCar(Long carId) {
-		List<PartCategory> categories =  categoryRepository.findAll();
+		List<PartCategory> categories =  categoryRepository.findByCar(carId);
 		return categories.stream()
 								.map(categoryMapper::toResponse)
 								.collect(Collectors.toList());

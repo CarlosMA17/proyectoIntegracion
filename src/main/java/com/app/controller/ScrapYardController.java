@@ -25,9 +25,9 @@ import com.app.service.ScrapYardServiceImpl;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:5173")
 public class ScrapYardController {
 
 	private static final String PART_RESOURCE = "/scrapyards";

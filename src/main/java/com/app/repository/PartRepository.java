@@ -12,7 +12,7 @@ import com.app.entity.Part;
 
 @Repository
 public interface PartRepository extends JpaRepository<Part, Long> {
-	@Query("SELECT p FROM Part p JOIN p.cars c WHERE c.carId = :carId")
-    List<Part> findPartsByCarId(@Param("carId") Long carId);
+	@Query("SELECT p FROM Part p JOIN p.cars c WHERE c.id = :carId AND p.category.id = :categoryId")
+    List<Part> findPartsByCarIdAndCategoryId(@Param("carId") Long carId, @Param("categoryId") Long categoryId);
 
 }

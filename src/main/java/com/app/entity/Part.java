@@ -48,7 +48,7 @@ public class Part {
     private Set<ScrapYardParts> scrapYardParts = new LinkedHashSet<>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "category", nullable = false)
+	@JoinColumn(name = "category_id", nullable = false)
 	@JsonManagedReference
     private PartCategory category;
 	

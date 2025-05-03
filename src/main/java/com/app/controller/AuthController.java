@@ -13,9 +13,9 @@ import com.app.dtos.auth.AuthLoginRequestDto;
 import com.app.dtos.auth.AuthResponseDto;
 import com.app.service.UserDetailsServiceImpl;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
 	@Autowired
