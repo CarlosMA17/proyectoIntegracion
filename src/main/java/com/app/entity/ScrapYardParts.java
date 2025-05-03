@@ -82,4 +82,8 @@ public class ScrapYardParts implements Serializable {
 		this.price = price;
 	}
 	
+	public String getPartName() {
+	    return partId.getName();
+	}
+	
 }

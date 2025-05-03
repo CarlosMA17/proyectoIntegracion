@@ -6,8 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.dtos.partdto.PartResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
+import com.app.entity.Part;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
 import com.app.exception.ResourceNotFoundException;
@@ -60,6 +62,14 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		return parts.stream()
 				.map(scrapYardMapper::toResponse)
 				.collect(Collectors.toList());
+	}
+	
+	@Override
+	public List<ScrapYardPartsResponseDto> getPartBySubcategoryId(Long partId) {
+		List<ScrapYardParts> parts =  scrapYardRepository.findByPartId_PartId(partId);
+		return parts.stream()
+								.map(scrapYardMapper::toResponse)
+								.collect(Collectors.toList());
 	}
 
 	/*private ScrapYard validateAndGetBook(Long id) {

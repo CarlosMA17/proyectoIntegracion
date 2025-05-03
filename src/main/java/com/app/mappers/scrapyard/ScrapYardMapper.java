@@ -19,6 +19,5 @@ public interface ScrapYardMapper {
 	ScrapYard toBook(ScrapYardRequestDto scrapYardRequestDto);
 	
 	// Entity -> Dto
-	
 	ScrapYardPartsResponseDto toResponse(ScrapYardParts scrapYard);
 }

@@ -30,7 +30,7 @@ import jakarta.websocket.server.PathParam;
 @RequestMapping("/api")
 public class ScrapYardController {
 
-	private static final String PART_RESOURCE = "/scrapyards";
+	private static final String PART_RESOURCE = "/scrapyardparts";
 	private static final String PART_ID_PATH = PART_RESOURCE + "/search";
 	
 	@Autowired
@@ -62,11 +62,25 @@ public class ScrapYardController {
     }
 
 	/**
-	 *  GET PART BY ID
+	 *  GET PART BY NAME
+	 * @param partName
+	 */
+	@GetMapping(value = PART_RESOURCE + "/{partId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartBySubcategoryId(@PathVariable Long partId) {		
+		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartBySubcategoryId(partId);
+		
+		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
+				HttpStatus.OK.value(), parts);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	/**
+	 *  GET PART BY NAME
 	 * @param partName
 	 */
 	@GetMapping(value = PART_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartById(@PathParam(value = "partName") String partName) {		
+	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartByName(@PathParam(value = "partName") String partName) {		
 		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartByName(partName);
 		
 		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
