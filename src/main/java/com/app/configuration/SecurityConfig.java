@@ -45,7 +45,7 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.csrf(csrf -> csrf.disable())
-				.cors(Customizer.withDefaults())
+				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeHttpRequests(auth -> 
 												auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 												.requestMatchers(HttpMethod.GET, 
@@ -53,9 +53,9 @@ public class SecurityConfig {
 																		"/doc/swagger-ui/**", 
 																		"/doc/swagger-ui.html", 
 																		"/v3/api-docs/**").permitAll()
-				.requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/api/**").hasRole("ADMIN")
-				.requestMatchers(HttpMethod.GET, "/api/**").hasRole("USER")
+				.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/api/**").permitAll()
+				//.requestMatchers(HttpMethod.GET, "/api/parts/{partId}").hasRole("USER")
 				//.requestMatchers(HttpMethod.GET, "/api/scrapyards").permitAll()
 
 							// .requestMatchers(HttpMethod.GET, "/api/writers/onlycreate").hasAuthority("CREATE")

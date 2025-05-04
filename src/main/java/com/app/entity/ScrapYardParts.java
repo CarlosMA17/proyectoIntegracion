@@ -28,15 +28,27 @@ public class ScrapYardParts implements Serializable {
 	
 	private int wearLevel;
 	private float price;
+	private boolean reserved;
 	
 	public ScrapYardParts() {}
-	
-	public ScrapYardParts(Part partId, ScrapYard scrapYardId, int wearLevel, float price) {
+
+	public ScrapYardParts(Part partId, ScrapYard scrapYardId, int wearLevel, float price, boolean reserved) {
 		super();
 		this.partId = partId;
 		this.scrapYardId = scrapYardId;
 		this.wearLevel = wearLevel;
 		this.price = price;
+		this.reserved = reserved;
+	}
+
+
+
+	public boolean isReserved() {
+		return reserved;
+	}
+
+	public void setReserved(boolean reserved) {
+		this.reserved = reserved;
 	}
 
 	public Set<Car> getCars() {
