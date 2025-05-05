@@ -91,7 +91,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			    .orElseThrow(() -> new UsernameNotFoundException("User not found"));		
 		
 		Long scrapYardId = null;
-		System.out.println(user.getScrapYard().getScrapYardId());
 		if (user.getRoles().stream().anyMatch(r -> r.getName().equals("SCRAPYARD"))) {
 		    scrapYardId = user.getScrapYard() != null ? user.getScrapYard().getScrapYardId() : null;
 		}

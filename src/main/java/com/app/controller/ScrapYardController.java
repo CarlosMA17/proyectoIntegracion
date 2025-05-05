@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dtos.api.ApiResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
+import com.app.entity.PartId;
 import com.app.service.ScrapYardServiceImpl;
 
 import jakarta.validation.Valid;
@@ -33,6 +34,8 @@ public class ScrapYardController {
 	private static final String PART_RESOURCE = "/scrapyardparts";
 	private static final String PART_SY_ID_PATH = PART_RESOURCE + "/scrapyards/{scrapYardId}";
 	private static final String PART_PART_ID_PATH = PART_RESOURCE + "/{partId}";
+	private static final String PART_RESERVATION_PATH = PART_RESOURCE + "/scrapyards/reservation";
+
 	
 	@Autowired
 	ScrapYardServiceImpl scrapYardService;
@@ -62,6 +65,20 @@ public class ScrapYardController {
 				HttpStatus.OK.value(), parts);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	/**
+	 *  PUT PART TO RESERVED
+	 * @param partName
+	 */
+	@PutMapping(value = PART_RESERVATION_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<Void>> putScrapYardPartReserved(@RequestBody ScrapYardRequestDto scrapYardPartsReservationDto) {	
+		System.out.println(scrapYardPartsReservationDto.getPartId() + " sy " + scrapYardPartsReservationDto.getScrapYardId());
+	    PartId idEntity = new PartId(scrapYardPartsReservationDto.getPartId(), scrapYardPartsReservationDto.getScrapYardId());
+	    
+	    scrapYardService.putPartToReserved(idEntity);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	/**

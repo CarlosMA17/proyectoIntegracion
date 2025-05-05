@@ -18,6 +18,6 @@ public interface ScrapYardMapper {
 	@Mapping(target = "scrapYardParts", ignore = true)
 	ScrapYard toBook(ScrapYardRequestDto scrapYardRequestDto);
 	
-	// Entity -> Dto
+	@Mapping(target = "scrapYardId", source = "scrapYard.scrapYardId")
 	ScrapYardPartsResponseDto toResponse(ScrapYardParts scrapYard);
 }

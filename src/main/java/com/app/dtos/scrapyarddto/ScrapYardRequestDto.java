@@ -6,5 +6,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ScrapYardRequestDto {
-    private String name;
+    private Long partId;
+    private Long scrapYardId;
 }

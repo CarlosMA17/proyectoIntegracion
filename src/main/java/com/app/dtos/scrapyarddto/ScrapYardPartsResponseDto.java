@@ -3,6 +3,7 @@ package com.app.dtos.scrapyarddto;
 import java.util.List;
 
 import com.app.entity.Car;
+import com.app.entity.ScrapYard;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class ScrapYardPartsResponseDto {
 
 	private String partName;
+	private Long scrapYardId;
 	private List<Car> cars;
 	private String scrapYardName;
 	private String scrapYardLocation;

@@ -98,4 +98,8 @@ public class ScrapYardParts implements Serializable {
 	    return partId.getName();
 	}
 	
+	public Long getScrapYardId() {
+	    return scrapYardId.getScrapYardId();
+	}
+	
 }
