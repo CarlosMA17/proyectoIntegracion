@@ -12,7 +12,6 @@ import com.app.entity.ScrapYardParts;
 import com.app.mappers.category.CategoryMapper;
 import com.app.mappers.scrapyard.ScrapYardMapper;
 import com.app.repository.CategoryRepository;
-import com.app.repository.ScrapYardRepository;
 import com.app.repository.WriterRepository;
 
 @Service

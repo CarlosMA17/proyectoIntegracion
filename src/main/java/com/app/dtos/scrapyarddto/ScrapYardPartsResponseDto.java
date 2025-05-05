@@ -18,4 +18,5 @@ public class ScrapYardPartsResponseDto {
 	private float price;
 	private int wearLevel;
 	private String category;
+	private boolean reserved;
 }

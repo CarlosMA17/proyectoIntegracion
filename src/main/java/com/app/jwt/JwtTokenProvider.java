@@ -1,6 +1,7 @@
 package com.app.jwt;
 
 import java.util.Date;
+import java.util.List;
 import java.util.function.Function;
 
 import javax.crypto.SecretKey;
@@ -8,6 +9,8 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+
+import com.app.entity.Role;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -27,8 +30,14 @@ public class JwtTokenProvider {
 		Date currentDate = new Date();
 		Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION_DATE);
 		
+		List<String> roles = authentication.getAuthorities()
+                .stream()
+                .map(auth -> auth.getAuthority())
+                .toList();
+		
 		return Jwts.builder()
 				   .subject(username)
+		           .claim("roles", roles)
 				   .issuedAt(new Date())
 				   .expiration(expireDate)
 				   .signWith(getSignInKey(), Jwts.SIG.HS256)

@@ -24,6 +24,7 @@ import com.app.dtos.auth.AuthLoginRequestDto;
 import com.app.dtos.auth.AuthResponseDto;
 import com.app.exception.ResourceNotFoundException;
 import com.app.jwt.JwtTokenProvider;
+import com.app.repository.RoleRepository;
 import com.app.repository.UserRepository;
 
 @Service
@@ -31,6 +32,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	RoleRepository roleRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -83,7 +87,45 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		
 		String accessToken = jwtTokenProvider.generateToken(authentication);
 		
-		return new AuthResponseDto(accessToken);
+		UserEntity user = userRepository.findUserEntityByUsername(authLoginRequest.getUsername())
+			    .orElseThrow(() -> new UsernameNotFoundException("User not found"));		
+		
+		Long scrapYardId = null;
+		System.out.println(user.getScrapYard().getScrapYardId());
+		if (user.getRoles().stream().anyMatch(r -> r.getName().equals("SCRAPYARD"))) {
+		    scrapYardId = user.getScrapYard() != null ? user.getScrapYard().getScrapYardId() : null;
+		}
+
+		
+		return new AuthResponseDto(accessToken, scrapYardId);
+	}
+	
+	public AuthResponseDto register(AuthLoginRequestDto registerDto) {
+	    if (userRepository.findUserEntityByUsername(registerDto.getUsername()).isPresent()) {
+	        throw new RuntimeException("Username is already taken");
+	    }
+	    
+	    Role roleUser = roleRepository.findById(2L)
+                .orElseThrow(() -> new RuntimeException("Role USER not found"));
+
+	    UserEntity newUser = new UserEntity();
+	    newUser.setUsername(registerDto.getUsername());
+	    newUser.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+	    newUser.setEnabled(true);
+	    newUser.setAccountNoExpired(true);
+	    newUser.setAccountNoLocked(true);
+	    newUser.setCredentialNoExpired(true);
+		newUser.setRoles(Set.of(roleUser));
+
+	    userRepository.save(newUser);
+
+	    // Autenticar directamente al usuario recién registrado
+	    Authentication authentication = authenticate(registerDto.getUsername(), registerDto.getPassword());
+	    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+	    String token = jwtTokenProvider.generateToken(authentication);
+
+	    return new AuthResponseDto(token, null);
 	}
 	
 }

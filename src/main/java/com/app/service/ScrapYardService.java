@@ -8,18 +8,11 @@ import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
 
 public interface ScrapYardService {
 
-	//ScrapYardResponseDto createBook(ScrapYardRequestDto scrapYardRequestDto);
-	
-	List<ScrapYardPartsResponseDto> getAllParts();
-	/*ScrapYardResponseDto getBookById(Long bookId);
-	ScrapYardResponseDto updateBook(Long bookId, ScrapYardRequestDto scrapYardRequestDto);
-	void deleteBook(Long bookId);
-	
-	ScrapYardResponseDto addWriterToBook(Long bookId, Long writerId);*/
-
-
 	List<ScrapYardPartsResponseDto> getPartByName(String partName);
 
 
 	List<ScrapYardPartsResponseDto> getPartBySubcategoryId(Long partId);
+
+
+	List<ScrapYardPartsResponseDto> getAllPartsBySY(Long scrapyardId);
 }

@@ -31,41 +31,30 @@ import jakarta.websocket.server.PathParam;
 public class ScrapYardController {
 
 	private static final String PART_RESOURCE = "/scrapyardparts";
-	private static final String PART_ID_PATH = PART_RESOURCE + "/search";
+	private static final String PART_SY_ID_PATH = PART_RESOURCE + "/scrapyards/{scrapYardId}";
+	private static final String PART_PART_ID_PATH = PART_RESOURCE + "/{partId}";
 	
 	@Autowired
 	ScrapYardServiceImpl scrapYardService;
 
 	
-	/*@PostMapping(value = BOOK_RESOURCE,
-	 		 consumes = MediaType.APPLICATION_JSON_VALUE, 
-	 		 produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<BookResponseDto>> createBook(@Valid @RequestBody BookRequestDto bookRequestDto) {
-		
-		BookResponseDto createdBook = bookService.createBook(bookRequestDto);
-		ApiResponseDto<BookResponseDto> response = new ApiResponseDto("Book created successfully",
-														HttpStatus.CREATED.value(), createdBook);
-		
-		return new ResponseEntity<>(response, HttpStatus.CREATED);        
-	}*/
-	
 	/**
 	 *  GET ALL PARTS
 	 */
-	@GetMapping(value = PART_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getAllParts() {
-		List<ScrapYardPartsResponseDto> scrapYardParts = scrapYardService.getAllParts();
-
-		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
+	@GetMapping(value = PART_SY_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getAllParts(@PathVariable Long scrapYardId) {
+		System.out.println(scrapYardId);
+		List<ScrapYardPartsResponseDto> scrapYardParts = scrapYardService.getAllPartsBySY(scrapYardId);
+		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("parts fetched successfully",
 				HttpStatus.OK.value(), scrapYardParts);
 		return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 	/**
-	 *  GET PART BY NAME
+	 *  GET PART BY SUBCATEGORY ID
 	 * @param partName
 	 */
-	@GetMapping(value = PART_RESOURCE + "/{partId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = PART_PART_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartBySubcategoryId(@PathVariable Long partId) {		
 		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartBySubcategoryId(partId);
 		
@@ -78,7 +67,7 @@ public class ScrapYardController {
 	/**
 	 *  GET PART BY NAME
 	 * @param partName
-	 */
+	 *
 	@GetMapping(value = PART_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartByName(@PathParam(value = "partName") String partName) {		
 		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartByName(partName);
@@ -87,31 +76,6 @@ public class ScrapYardController {
 				HttpStatus.OK.value(), parts);
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-
-	/*@PutMapping(value = BOOK_ID_PATH, 
-				consumes = MediaType.APPLICATION_JSON_VALUE, 
-				produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<BookResponseDto>> updateBook(@Valid @PathVariable Long bookId, 
-																	  @RequestBody BookRequestDto bookRequestDto) {
-		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-	}
-
-	@DeleteMapping(value = BOOK_ID_PATH)
-	public ResponseEntity<Void> deleteBook(@PathVariable Long bookId) {
-		return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-	}
-	
-	
-	@PostMapping(value = BOOK_ID_PATH + "/writers/{writerId}",
-		 	 produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<BookResponseDto>> addExistingWriterToBook(@PathVariable Long bookId, @PathVariable Long writerId) {																		
-		
-		BookResponseDto updatedBook = bookService.addWriterToBook(writerId, bookId);
-		ApiResponseDto<BookResponseDto> response = new ApiResponseDto("Writer added successfully",
-				HttpStatus.OK.value(), updatedBook);
-		
-		return new ResponseEntity<>(response, HttpStatus.OK);        
 	}*/
 
 }

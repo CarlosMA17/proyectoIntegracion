@@ -3,19 +3,22 @@ package com.app.configuration;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.app.entity.Role;
+import com.app.entity.ScrapYard;
 import com.app.entity.UserEntity;
+import com.app.repository.ScrapYardRepository;
 import com.app.repository.UserRepository;
 
 //@Configuration
 public class LoadDatabase {
 
 	@Bean
-	CommandLineRunner initDatabase(UserRepository userRepository) {
+	CommandLineRunner initDatabase(UserRepository userRepository, ScrapYardRepository scrapYardRepository) {
 		return arg -> {
 			/** Roles **/
 			Role roleAdmin = Role.builder()
@@ -26,12 +29,9 @@ public class LoadDatabase {
 					 			.name("USER")
 					 			.build();
 			
-			Role roleInvited = Role.builder()
-		 						   .name("INVITED")
-		 						   .build();
-			
+
 			Role roleDevelop= Role.builder()
-					   			  .name("DEVELOPER")
+					   			  .name("SCRAPYARD")
 					   			  .build();
 			
 			UserEntity userAlex = UserEntity.builder()
@@ -54,18 +54,15 @@ public class LoadDatabase {
 											.roles(Set.of(roleUser))
 											.build();
 			
-			UserEntity userDaniel = UserEntity.builder()
-											  .username("Daniel")
-											  .password("$2a$10$3S84.aE5GAxLMeXyDUFkruNnoQVE/UOM6iY35vtwirheoBfl7B9qC")
-											  .isEnabled(true)
-											  .accountNoExpired(true)
-											  .accountNoLocked(true)
-											  .credentialNoExpired(true)
-											  .roles(Set.of(roleInvited))
-											  .build();
+			ScrapYard scrapyardPolo = new ScrapYard();
+			scrapyardPolo.setName("desguaces Polo");
+			scrapyardPolo.setLocation("taco");
+			scrapYardRepository.save(scrapyardPolo);
 			
 			UserEntity userAndres = UserEntity.builder()
 											  .username("Andres")
+											  .scrapYard(new ScrapYard())
+											  .scrapYard(scrapyardPolo)
 											  .password("$2a$10$3S84.aE5GAxLMeXyDUFkruNnoQVE/UOM6iY35vtwirheoBfl7B9qC")
 											  .isEnabled(true)
 											  .accountNoExpired(true)
@@ -74,7 +71,7 @@ public class LoadDatabase {
 											  .roles(Set.of(roleDevelop))
 											  .build();
 			
-			userRepository.saveAll(List.of(userAlex, userJose, userDaniel, userAndres));
+			userRepository.saveAll(List.of(userAlex, userJose, userAndres));
 		};
 	}
 }

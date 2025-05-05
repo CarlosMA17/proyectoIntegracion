@@ -9,8 +9,10 @@ public class AuthResponseDto {
 
 	private String accessToken;
 	private String tokenType = "Bearer ";
+	private Long scrapYardId;
 	
-	public AuthResponseDto(String accessToken) {
+	public AuthResponseDto(String accessToken, Long scrapYardId) {
 		this.accessToken = accessToken;
+		this.scrapYardId = scrapYardId;
 	}
 }

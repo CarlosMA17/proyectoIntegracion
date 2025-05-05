@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,12 @@ public class UserEntity {
 	@Column(unique = true)
 	private String username;
 	
+	@Column
 	private String password;
+	
+	@OneToOne
+	@JoinColumn(name = "scrap_yard_id")
+	private ScrapYard scrapYard;
 	
 	@Column(name = "is_enabled")
 	private boolean isEnabled;

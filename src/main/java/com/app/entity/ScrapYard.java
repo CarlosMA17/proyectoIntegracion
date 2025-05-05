@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -38,6 +39,10 @@ public class ScrapYard {
 		)
 	@JsonManagedReference
     private Set<ScrapYardParts> scrapYardParts = new LinkedHashSet<>();
+	
+	@OneToOne(mappedBy = "scrapYard")
+	@JsonBackReference
+    private UserEntity user;
 
 	@Column(nullable = false, length = 50)
 	private String name;
