@@ -37,7 +37,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		
 
 		List<ScrapYardParts> scrapYardParts =  scrapYardPartsRepository.findByScrapYardId_ScrapYardId(scrapyardId);
-		
+
 		return scrapYardParts.stream()
 								.map(scrapYardMapper::toResponse)
 								.collect(Collectors.toList());

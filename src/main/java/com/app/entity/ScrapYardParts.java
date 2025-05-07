@@ -4,15 +4,21 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import lombok.Data;
 
 @Entity
+@Data
 @IdClass(PartId.class)
 public class ScrapYardParts implements Serializable {
 
@@ -25,6 +31,11 @@ public class ScrapYardParts implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="scrap_yard_id")
 	private ScrapYard scrapYardId;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "car_id", nullable = false)
+	@JsonManagedReference
+    private Car car;
 	
 	private int wearLevel;
 	private float price;
@@ -50,12 +61,6 @@ public class ScrapYardParts implements Serializable {
 	public void setReserved(boolean reserved) {
 		this.reserved = reserved;
 	}
-
-	public Set<Car> getCars() {
-		return partId.getCars();
-	}
-
-	
 	
 	public String getcategory() {
 		return partId.getCategory().getCategoryName();

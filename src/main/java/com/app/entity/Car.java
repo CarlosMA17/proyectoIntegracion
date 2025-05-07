@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -41,6 +42,16 @@ public class Car {
 		   inverseJoinColumns = @JoinColumn(name = "fk_part_id"))
     @JsonBackReference
 	private List<Part> parts = new ArrayList<>();
+	
+	@OneToMany(
+			mappedBy = "car",
+		cascade = CascadeType.ALL,
+		orphanRemoval = true
+		)
+	@JsonBackReference
+	private List<ScrapYardParts> scrapYardParts = new ArrayList<>();
+	
+	
 
 
 	@Column(nullable = false, length = 50)
