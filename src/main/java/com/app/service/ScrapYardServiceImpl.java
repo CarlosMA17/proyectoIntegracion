@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 import com.app.dtos.partdto.PartResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
+import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
 import com.app.entity.Part;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
 import com.app.entity.ScrapYardPartsId;
 import com.app.exception.ResourceNotFoundException;
 import com.app.mappers.scrapyard.ScrapYardMapper;
+import com.app.repository.PartRepository;
 import com.app.repository.ScrapYardPartsRepository;
 import com.app.repository.ScrapYardRepository;
 import com.app.repository.WriterRepository;
@@ -30,6 +32,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	
 	@Autowired ScrapYardPartsRepository scrapYardPartsRepository;
 	@Autowired ScrapYardRepository scrapYardRepository;
+	@Autowired PartRepository partRepository;
 	@Autowired WriterRepository writerRepository;
 	@Autowired ScrapYardMapper scrapYardMapper;
 
@@ -95,6 +98,20 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		ScrapYardPartsId scrapYardPart = new ScrapYardPartsId(scrapYardPartDto.getPartId(), scrapYardPartDto.getScrapYardId());
 		
         scrapYardPartsRepository.deleteById(scrapYardPart);
+	}
+
+	@Override
+	public void addPart(ScrapYardPartsRequestDto scrapYardPartRequestDto) {
+		Part part = partRepository.findByName(scrapYardPartRequestDto.getPartName())
+                .orElseGet(() -> {
+                    Part newPart = new Part();
+                    newPart.setName(scrapYardPartRequestDto.getPartName());
+                    return partRepository.save(newPart);
+                });
+		ScrapYardParts scrapYardPart = scrapYardMapper.toEntity(scrapYardPartRequestDto);
+		scrapYardPart.setPartId(part);
+		
+        scrapYardPartsRepository.save(scrapYardPart);
 	}
 	
 }

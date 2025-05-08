@@ -55,6 +55,7 @@ public class SecurityConfig {
 																		"/v3/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/api/scrapyardparts/scrapyards/{scrapYardId}").hasRole("SCRAPYARD")
 				.requestMatchers(HttpMethod.DELETE, "/api/scrapyardparts/scrapyards").hasRole("SCRAPYARD")
+				.requestMatchers(HttpMethod.POST, "/api/scrapyardparts").hasRole("SCRAPYARD")
 				.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/**").permitAll()
 				.requestMatchers(HttpMethod.PUT, "/api/**").permitAll()

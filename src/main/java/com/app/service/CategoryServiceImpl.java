@@ -27,5 +27,13 @@ public class CategoryServiceImpl implements CategoryService {
 								.map(categoryMapper::toResponse)
 								.collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<CategoryResponseDto> getAllCategories() {
+		List<PartCategory> categories =  categoryRepository.findAll();
+		return categories.stream()
+								.map(categoryMapper::toResponse)
+								.collect(Collectors.toList());
+	}
 
 }

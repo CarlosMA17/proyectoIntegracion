@@ -5,6 +5,7 @@ import java.util.List;
 import com.app.dtos.partdto.PartResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
+import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
 import com.app.entity.ScrapYardPartsId;
@@ -26,4 +27,6 @@ public interface ScrapYardService {
 
 
 	void deletePart(ScrapYardRequestDto scrapYardPart);
+	
+	void addPart(ScrapYardPartsRequestDto scrapYardPartRequestDto);
 }

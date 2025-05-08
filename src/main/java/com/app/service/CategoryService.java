@@ -13,6 +13,8 @@ public interface CategoryService {
 	
 	ScrapYardResponseDto addWriterToBook(Long bookId, Long writerId);*/
 
+	List<CategoryResponseDto> getAllCategories();
+
 
 	//List<CategoryResponseDto> getPartByName(String partName);
 

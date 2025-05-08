@@ -34,8 +34,21 @@ public class CategoryController {
 	 *  @param carID
 	 */
 	@GetMapping(value = CATEGORY_CAR, produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<ApiResponseDto<List<CategoryResponseDto>>> getAllCategories(@PathVariable long carId) {
+	public ResponseEntity<ApiResponseDto<List<CategoryResponseDto>>> getAllCategoriesByCar(@PathVariable long carId) {
 		List<CategoryResponseDto> categories = categoryService.getAllCategoriesByCar(carId);
+
+		ApiResponseDto<List<CategoryResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
+				HttpStatus.OK.value(), categories);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	/**
+	 *  GET ALL CATEGORIES
+	 *  @param carID
+	 */
+	@GetMapping(value = CATEGORY_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<ApiResponseDto<List<CategoryResponseDto>>> getAllCategories() {
+		List<CategoryResponseDto> categories = categoryService.getAllCategories();
 
 		ApiResponseDto<List<CategoryResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
 				HttpStatus.OK.value(), categories);

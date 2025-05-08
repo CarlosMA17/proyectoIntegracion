@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
+import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
 
@@ -13,10 +14,7 @@ public interface ScrapYardMapper {
 	
 
 	// Dto -> Entity
-	@Mapping(target = "scrapYardId", ignore = true)
-	@Mapping(target = "location", ignore = true)
-	@Mapping(target = "scrapYardParts", ignore = true)
-	ScrapYard toEntity(ScrapYardRequestDto scrapYardRequestDto);
+	ScrapYardParts toEntity(ScrapYardPartsRequestDto scrapYardRequestDto);
 	
 	@Mapping(target = "scrapYardId", source = "scrapYard.scrapYardId")
 	@Mapping(target = "partId", source = "partId.partId")

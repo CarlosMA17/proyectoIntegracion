@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dtos.api.ApiResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
+import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
 import com.app.entity.ScrapYardPartsId;
+import com.app.repository.ScrapYardPartsRepository;
 import com.app.service.ScrapYardServiceImpl;
 
 import jakarta.validation.Valid;
@@ -31,6 +33,8 @@ import jakarta.websocket.server.PathParam;
 @RequestMapping("/api")
 public class ScrapYardController {
 
+    private final ScrapYardPartsRepository scrapYardPartsRepository;
+
 	private static final String PART_RESOURCE = "/scrapyardparts";
 	private static final String PART_SY_ID_PATH = PART_RESOURCE + "/scrapyards/{scrapYardId}";
 	private static final String PART_PART_ID_PATH = PART_RESOURCE + "/{partId}";
@@ -39,6 +43,11 @@ public class ScrapYardController {
 	
 	@Autowired
 	ScrapYardServiceImpl scrapYardService;
+
+
+    ScrapYardController(ScrapYardPartsRepository scrapYardPartsRepository) {
+        this.scrapYardPartsRepository = scrapYardPartsRepository;
+    }
 
 	
 	/**
@@ -91,6 +100,13 @@ public class ScrapYardController {
 		
 		
 	    return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping(value = PART_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> addPart(@RequestBody ScrapYardPartsRequestDto scrapyardPartsRequestDto) {
+		System.out.println(scrapyardPartsRequestDto);
+		scrapYardService.addPart(scrapyardPartsRequestDto);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 }
