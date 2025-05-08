@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dtos.api.ApiResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
-import com.app.entity.PartId;
+import com.app.entity.ScrapYardPartsId;
 import com.app.service.ScrapYardServiceImpl;
 
 import jakarta.validation.Valid;
@@ -73,8 +73,8 @@ public class ScrapYardController {
 	 */
 	@PutMapping(value = PART_RESERVATION_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Void>> putScrapYardPartReserved(@RequestBody ScrapYardRequestDto scrapYardPartsReservationDto) {	
-		System.out.println(scrapYardPartsReservationDto.getPartId() + " sy " + scrapYardPartsReservationDto.getScrapYardId());
-	    PartId idEntity = new PartId(scrapYardPartsReservationDto.getPartId(), scrapYardPartsReservationDto.getScrapYardId());
+
+		ScrapYardPartsId idEntity = new ScrapYardPartsId(scrapYardPartsReservationDto.getPartId(), scrapYardPartsReservationDto.getScrapYardId());
 	    
 	    scrapYardService.putPartToReserved(idEntity);
 		
@@ -82,17 +82,15 @@ public class ScrapYardController {
 	}
 	
 	/**
-	 *  GET PART BY NAME
+	 *  DELETE PART BY SCRAPYARDPARTSiD
 	 * @param partName
-	 *
-	@GetMapping(value = PART_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartByName(@PathParam(value = "partName") String partName) {		
-		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartByName(partName);
+	 */
+	@DeleteMapping(value = PART_RESERVATION_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> deletePart(@RequestBody ScrapYardRequestDto scrapYardRequestDto) {		
+		scrapYardService.deletePart(scrapYardRequestDto);
 		
-		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
-				HttpStatus.OK.value(), parts);
 		
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}*/
+	    return ResponseEntity.noContent().build();
+	}
 
 }

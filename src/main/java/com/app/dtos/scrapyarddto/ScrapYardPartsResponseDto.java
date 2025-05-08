@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class ScrapYardPartsResponseDto {
 
 	private String partName;
+	private Long partId;
 	private Long scrapYardId;
 	private CarResponseDto car;
 	private String scrapYardName;

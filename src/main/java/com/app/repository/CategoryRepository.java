@@ -8,8 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.app.entity.PartCategory;
-import com.app.entity.PartId;
-import com.app.entity.ScrapYardParts;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<PartCategory, Long> {

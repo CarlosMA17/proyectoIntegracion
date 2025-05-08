@@ -19,7 +19,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@IdClass(PartId.class)
+@IdClass(ScrapYardPartsId .class)
 public class ScrapYardParts implements Serializable {
 
 	@Id

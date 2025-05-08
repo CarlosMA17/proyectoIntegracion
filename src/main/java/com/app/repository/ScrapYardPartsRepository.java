@@ -7,12 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.app.entity.Part;
-import com.app.entity.PartId;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
+import com.app.entity.ScrapYardPartsId;
 
 @Repository
-public interface ScrapYardPartsRepository extends JpaRepository<ScrapYardParts, PartId> {
+public interface ScrapYardPartsRepository extends JpaRepository<ScrapYardParts, ScrapYardPartsId > {
 
 	List<ScrapYardParts> findByPartIdNameStartingWith(String partName);
 	List<ScrapYardParts> findByPartId_PartId(Long partId);

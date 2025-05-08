@@ -6,15 +6,15 @@ import java.util.Objects;
 import jakarta.persistence.Id;
 
 
-public class PartId implements Serializable {
+public class ScrapYardPartsId  implements Serializable {
 	
 	private Long partId;
 	private Long scrapYardId;
-	public PartId() {}
+	public ScrapYardPartsId () {}
 
 	
 
-	public PartId(Long partId, Long scrapYardId) {
+	public ScrapYardPartsId (Long partId, Long scrapYardId) {
 		super();
 		this.partId = partId;
 		this.scrapYardId = scrapYardId;
@@ -34,7 +34,7 @@ public class PartId implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PartId other = (PartId) obj;
+		ScrapYardPartsId  other = (ScrapYardPartsId ) obj;
 		return Objects.equals(partId, other.partId) && Objects.equals(scrapYardId, other.scrapYardId);
 	}	
 }

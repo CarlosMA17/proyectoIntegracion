@@ -53,10 +53,11 @@ public class SecurityConfig {
 																		"/doc/swagger-ui/**", 
 																		"/doc/swagger-ui.html", 
 																		"/v3/api-docs/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/api/scrapyardparts/scrapyards/{scrapYardId}").hasRole("SCRAPYARD")
+				.requestMatchers(HttpMethod.DELETE, "/api/scrapyardparts/scrapyards").hasRole("SCRAPYARD")
 				.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/**").permitAll()
 				.requestMatchers(HttpMethod.PUT, "/api/**").permitAll()
-				//.requestMatchers(HttpMethod.GET, "/api/parts/{partId}").hasRole("USER")
 				//.requestMatchers(HttpMethod.GET, "/api/scrapyards").permitAll()
 
 							// .requestMatchers(HttpMethod.GET, "/api/writers/onlycreate").hasAuthority("CREATE")

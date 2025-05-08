@@ -1,6 +1,7 @@
 package com.app.service;
 
 import java.util.List;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -11,14 +12,15 @@ import com.app.dtos.partdto.PartResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
 import com.app.entity.Part;
-import com.app.entity.PartId;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
+import com.app.entity.ScrapYardPartsId;
 import com.app.exception.ResourceNotFoundException;
 import com.app.mappers.scrapyard.ScrapYardMapper;
 import com.app.repository.ScrapYardPartsRepository;
 import com.app.repository.ScrapYardRepository;
 import com.app.repository.WriterRepository;
+
 
 @Service
 public class ScrapYardServiceImpl implements ScrapYardService {
@@ -63,7 +65,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	}
 	
 	@Override
-	public void putPartToReserved(PartId idEntity) {
+	public void putPartToReserved(ScrapYardPartsId idEntity) {
 		
         Optional<ScrapYardParts> optional = scrapYardPartsRepository.findById(idEntity);
         
@@ -86,4 +88,13 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		return scrapYardRepository.findById(idEntity)
 		        .orElseThrow(() -> new RuntimeException("Desguace no encontrado"));	
 	}
+	
+	@Override
+	public void deletePart(ScrapYardRequestDto scrapYardPartDto) {
+		
+		ScrapYardPartsId scrapYardPart = new ScrapYardPartsId(scrapYardPartDto.getPartId(), scrapYardPartDto.getScrapYardId());
+		
+        scrapYardPartsRepository.deleteById(scrapYardPart);
+	}
+	
 }

@@ -16,8 +16,9 @@ public interface ScrapYardMapper {
 	@Mapping(target = "scrapYardId", ignore = true)
 	@Mapping(target = "location", ignore = true)
 	@Mapping(target = "scrapYardParts", ignore = true)
-	ScrapYard toBook(ScrapYardRequestDto scrapYardRequestDto);
+	ScrapYard toEntity(ScrapYardRequestDto scrapYardRequestDto);
 	
 	@Mapping(target = "scrapYardId", source = "scrapYard.scrapYardId")
+	@Mapping(target = "partId", source = "partId.partId")
 	ScrapYardPartsResponseDto toResponse(ScrapYardParts scrapYard);
 }
