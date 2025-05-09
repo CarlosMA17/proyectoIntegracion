@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ScrapYardPartsResponseDto {
 
+	private Long scrapYardPartId;
 	private String partName;
 	private Long partId;
 	private Long scrapYardId;

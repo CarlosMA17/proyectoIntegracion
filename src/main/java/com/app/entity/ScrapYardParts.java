@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
@@ -19,23 +21,25 @@ import lombok.Data;
 
 @Entity
 @Data
-@IdClass(ScrapYardPartsId .class)
+//@IdClass(ScrapYardPartsId .class)
 public class ScrapYardParts implements Serializable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long scrapYardPartId;
+	
 	@ManyToOne
 	@JoinColumn(name="part_id")
 	private Part partId;
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "car_id", nullable = false)
-	@JsonManagedReference
-	private Car car;
 	
-	@Id
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="scrap_yard_id")
 	private ScrapYard scrapYardId;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "car_id", nullable = false)
+	@JsonManagedReference
+	private Car car;
 	
 	private int wearLevel;
 	private float price;

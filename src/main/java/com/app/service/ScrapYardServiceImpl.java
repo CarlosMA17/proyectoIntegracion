@@ -19,7 +19,6 @@ import com.app.entity.Part;
 import com.app.entity.PartCategory;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
-import com.app.entity.ScrapYardPartsId;
 import com.app.exception.ResourceNotFoundException;
 import com.app.mappers.scrapyard.ScrapYardMapper;
 import com.app.repository.CarRepository;
@@ -77,9 +76,9 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	}
 	
 	@Override
-	public void putPartToReserved(ScrapYardPartsId idEntity) {
+	public void putPartToReserved(Long scrapYardPartId) {
 		
-        Optional<ScrapYardParts> optional = scrapYardPartsRepository.findById(idEntity);
+        Optional<ScrapYardParts> optional = scrapYardPartsRepository.findById(scrapYardPartId);
         
         ScrapYardParts part = optional.get();
         
@@ -102,11 +101,9 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	}
 	
 	@Override
-	public void deletePart(ScrapYardRequestDto scrapYardPartDto) {
-		
-		ScrapYardPartsId scrapYardPart = new ScrapYardPartsId(scrapYardPartDto.getPartId(), scrapYardPartDto.getScrapYardId());
-		
-        scrapYardPartsRepository.deleteById(scrapYardPart);
+	public void deletePart(Long scrapYardPartId) {
+				
+        scrapYardPartsRepository.deleteById(scrapYardPartId);
 	}
 
 	@Override

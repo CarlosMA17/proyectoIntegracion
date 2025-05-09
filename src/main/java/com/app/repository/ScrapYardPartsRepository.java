@@ -9,10 +9,9 @@ import org.springframework.stereotype.Repository;
 import com.app.entity.Part;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
-import com.app.entity.ScrapYardPartsId;
 
 @Repository
-public interface ScrapYardPartsRepository extends JpaRepository<ScrapYardParts, ScrapYardPartsId > {
+public interface ScrapYardPartsRepository extends JpaRepository<ScrapYardParts, Long > {
 
 	List<ScrapYardParts> findByPartIdNameStartingWith(String partName);
 	List<ScrapYardParts> findByPartId_PartIdAndReservedFalse(Long partId);

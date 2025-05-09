@@ -21,7 +21,6 @@ import com.app.dtos.api.ApiResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
 import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
-import com.app.entity.ScrapYardPartsId;
 import com.app.repository.ScrapYardPartsRepository;
 import com.app.service.ScrapYardServiceImpl;
 
@@ -38,7 +37,8 @@ public class ScrapYardController {
 	private static final String PART_RESOURCE = "/scrapyardparts";
 	private static final String PART_SY_ID_PATH = PART_RESOURCE + "/scrapyards/{scrapYardId}";
 	private static final String PART_PART_ID_PATH = PART_RESOURCE + "/{partId}";
-	private static final String PART_RESERVATION_PATH = PART_RESOURCE + "/scrapyards/reservation";
+	private static final String PART_RESERVATION_PATH = PART_RESOURCE + "/scrapyards/reservation/{scrapYardPartId}";
+	private static final String PART_DELETE_PATH = PART_RESOURCE + "/scrapyards/delete/{scrapYardPartId}";
 
 	
 	@Autowired
@@ -81,11 +81,10 @@ public class ScrapYardController {
 	 * @param partName
 	 */
 	@PutMapping(value = PART_RESERVATION_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Void>> putScrapYardPartReserved(@RequestBody ScrapYardRequestDto scrapYardPartsReservationDto) {	
+	public ResponseEntity<ApiResponseDto<Void>> putScrapYardPartReserved(@PathVariable Long scrapYardPartId) {	
 
-		ScrapYardPartsId idEntity = new ScrapYardPartsId(scrapYardPartsReservationDto.getPartId(), scrapYardPartsReservationDto.getScrapYardId());
 	    
-	    scrapYardService.putPartToReserved(idEntity);
+	    scrapYardService.putPartToReserved(scrapYardPartId);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -94,9 +93,9 @@ public class ScrapYardController {
 	 *  DELETE PART BY SCRAPYARDPARTSiD
 	 * @param partName
 	 */
-	@DeleteMapping(value = PART_RESERVATION_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Void> deletePart(@RequestBody ScrapYardRequestDto scrapYardRequestDto) {		
-		scrapYardService.deletePart(scrapYardRequestDto);
+	@DeleteMapping(value = PART_DELETE_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> deletePart(@PathVariable Long scrapYardPartId) {		
+		scrapYardService.deletePart(scrapYardPartId);
 		
 		
 	    return ResponseEntity.noContent().build();

@@ -8,7 +8,6 @@ import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
 import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
-import com.app.entity.ScrapYardPartsId;
 
 public interface ScrapYardService {
 
@@ -20,13 +19,13 @@ public interface ScrapYardService {
 
 	List<ScrapYardPartsResponseDto> getAllPartsBySY(Long scrapyardId);
 
-	void putPartToReserved(ScrapYardPartsId idEntity);
+	void putPartToReserved(Long scrapYardPartId);
 
 
 	ScrapYard findById(Long idEntity);
 
 
-	void deletePart(ScrapYardRequestDto scrapYardPart);
+	void deletePart(Long scrapYardPartId);
 	
 	void addPart(ScrapYardPartsRequestDto scrapYardPartRequestDto);
 }
