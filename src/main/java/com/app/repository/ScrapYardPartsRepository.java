@@ -15,6 +15,6 @@ import com.app.entity.ScrapYardPartsId;
 public interface ScrapYardPartsRepository extends JpaRepository<ScrapYardParts, ScrapYardPartsId > {
 
 	List<ScrapYardParts> findByPartIdNameStartingWith(String partName);
-	List<ScrapYardParts> findByPartId_PartId(Long partId);
+	List<ScrapYardParts> findByPartId_PartIdAndReservedFalse(Long partId);
 	List<ScrapYardParts> findByScrapYardId_ScrapYardId(Long scrapYardId);
 }

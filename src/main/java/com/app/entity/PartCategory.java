@@ -23,7 +23,7 @@ import lombok.Data;
 public class PartCategory {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long CategoryId;
+    private Long categoryId;
 
 	@OneToMany(
 				mappedBy = "category",

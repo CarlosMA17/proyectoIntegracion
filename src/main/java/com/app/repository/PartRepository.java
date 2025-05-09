@@ -14,7 +14,12 @@ import com.app.entity.ScrapYardParts;
 
 @Repository
 public interface PartRepository extends JpaRepository<Part, Long> {
-	@Query("SELECT p FROM Part p JOIN p.cars c WHERE c.id = :carId AND p.category.id = :categoryId")
+	@Query("""
+		    SELECT DISTINCT sp.partId FROM ScrapYardParts sp
+		    WHERE sp.car.carId = :carId
+		      AND sp.partId.category.categoryId = :categoryId
+		      AND sp.reserved = false
+		""")
     List<Part> findPartsByCarIdAndCategoryId(@Param("carId") Long carId, @Param("categoryId") Long categoryId);
 
 	Optional<Part> findByName(String partName);

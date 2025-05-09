@@ -1,8 +1,10 @@
 package com.app.service;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
-
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +14,16 @@ import com.app.dtos.partdto.PartResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
 import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
+import com.app.entity.Car;
 import com.app.entity.Part;
+import com.app.entity.PartCategory;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
 import com.app.entity.ScrapYardPartsId;
 import com.app.exception.ResourceNotFoundException;
 import com.app.mappers.scrapyard.ScrapYardMapper;
+import com.app.repository.CarRepository;
+import com.app.repository.CategoryRepository;
 import com.app.repository.PartRepository;
 import com.app.repository.ScrapYardPartsRepository;
 import com.app.repository.ScrapYardRepository;
@@ -32,7 +38,10 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	
 	@Autowired ScrapYardPartsRepository scrapYardPartsRepository;
 	@Autowired ScrapYardRepository scrapYardRepository;
+	@Autowired CategoryRepository categoryRepository;
 	@Autowired PartRepository partRepository;
+	@Autowired CarRepository carRepository;
+	
 	@Autowired WriterRepository writerRepository;
 	@Autowired ScrapYardMapper scrapYardMapper;
 
@@ -61,7 +70,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	
 	@Override
 	public List<ScrapYardPartsResponseDto> getPartBySubcategoryId(Long partId) {
-		List<ScrapYardParts> parts =  scrapYardPartsRepository.findByPartId_PartId(partId);
+		List<ScrapYardParts> parts =  scrapYardPartsRepository.findByPartId_PartIdAndReservedFalse(partId);
 		return parts.stream()
 								.map(scrapYardMapper::toResponse)
 								.collect(Collectors.toList());
@@ -102,14 +111,41 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 
 	@Override
 	public void addPart(ScrapYardPartsRequestDto scrapYardPartRequestDto) {
+		
+		ScrapYard scrapYard = scrapYardRepository.findById(scrapYardPartRequestDto.getScrapYardId())
+			    .orElseThrow(() -> new RuntimeException("ScrapYard no encontrado"));
+		
+		Car car = carRepository.findById(scrapYardPartRequestDto.getCarId())
+			    .orElseThrow(() -> new RuntimeException("Car no encontrado"));
+		
 		Part part = partRepository.findByName(scrapYardPartRequestDto.getPartName())
-                .orElseGet(() -> {
-                    Part newPart = new Part();
-                    newPart.setName(scrapYardPartRequestDto.getPartName());
-                    return partRepository.save(newPart);
-                });
+				.orElseGet(() -> {
+					Part newPart = new Part();
+					
+					PartCategory category = categoryRepository.findById(scrapYardPartRequestDto.getCategoryId())
+							.orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+					
+					List<Part> parts = car.getParts();
+					if (parts == null) {
+					    parts = new ArrayList<Part>();
+					}
+					parts.add(newPart);
+					car.setParts(parts);
+					
+					Set<Car> cars = new LinkedHashSet<>();
+					cars.add(car);
+					
+					
+					newPart.setName(scrapYardPartRequestDto.getPartName());
+					newPart.setCategory(category);
+					newPart.setCars(cars);
+					return partRepository.save(newPart);
+				});
+		
 		ScrapYardParts scrapYardPart = scrapYardMapper.toEntity(scrapYardPartRequestDto);
+		scrapYardPart.setScrapYardId(scrapYard);
 		scrapYardPart.setPartId(part);
+		scrapYardPart.setCar(car);
 		
         scrapYardPartsRepository.save(scrapYardPart);
 	}

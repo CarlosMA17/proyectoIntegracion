@@ -14,6 +14,7 @@ public interface ScrapYardMapper {
 	
 
 	// Dto -> Entity
+	@Mapping(target = "scrapYardId", ignore = true)
 	ScrapYardParts toEntity(ScrapYardPartsRequestDto scrapYardRequestDto);
 	
 	@Mapping(target = "scrapYardId", source = "scrapYard.scrapYardId")

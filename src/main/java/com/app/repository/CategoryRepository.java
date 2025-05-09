@@ -12,10 +12,11 @@ import com.app.entity.PartCategory;
 @Repository
 public interface CategoryRepository extends JpaRepository<PartCategory, Long> {
 	
-	@Query("SELECT DISTINCT pc FROM PartCategory pc " +
-	           "JOIN pc.parts p " +
-	           "JOIN p.cars c " +
-	           "WHERE c.carId = :carId")
+	@Query("SELECT DISTINCT pc FROM PartCategory pc\r\n"
+			+ "  JOIN pc.parts p\r\n"
+			+ "  JOIN ScrapYardParts sp ON sp.partId = p\r\n"
+			+ "  WHERE sp.car.carId = :carId\r\n"
+			+ "    AND sp.reserved = false")
 	List<PartCategory> findByCar(@Param("carId") Long carId);
 
 }

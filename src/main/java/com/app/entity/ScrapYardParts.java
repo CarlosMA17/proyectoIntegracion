@@ -26,16 +26,16 @@ public class ScrapYardParts implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="part_id")
 	private Part partId;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "car_id", nullable = false)
+	@JsonManagedReference
+	private Car car;
 	
 	@Id
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="scrap_yard_id")
 	private ScrapYard scrapYardId;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "car_id", nullable = false)
-	@JsonManagedReference
-    private Car car;
 	
 	private int wearLevel;
 	private float price;
