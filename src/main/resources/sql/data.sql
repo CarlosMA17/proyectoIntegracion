@@ -1,13 +1,13 @@
-INSERT INTO scrap_yards (name, location) VALUES
-('desguaces tenerife', 'taco'),
-('desguaces tenerife', 'sur'),
-('desguaces tenerife', 'arafo'),
-('desguaces polo', 'taco'),
-('desguaces insulares', 'taco'),
-('desguaces insulares', 'santa cruz'),
-('desguaces insulares', 'los cristianos'),
-('desguaces insulares', 'aguagarcia'),
-('desguaces geneto', 'geneto');
+INSERT INTO scrap_yards (name, location, number, schudle) VALUES
+('desguaces tenerife', 'taco', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00'),
+('desguaces tenerife', 'sur', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00'),
+('desguaces tenerife', 'arafo', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00'),
+('desguaces polo', 'taco', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00'),
+('desguaces insulares', 'taco', '608894476', 'Lunes a Viernes de 08:00 a 18:00'),
+('desguaces insulares', 'santa cruz', '608894476', 'Lunes a Viernes de 08:00 a 18:00'),
+('desguaces insulares', 'los cristianos', '608894476', 'Lunes a Viernes de 08:00 a 18:00'),
+('desguaces insulares', 'aguagarcia', '922 681 136', 'Lunes a Viernes de 08:00 a 18:00'),
+('desguaces geneto', 'geneto', '922 681 136', 'Lunes a Viernes de 08:00 a 18:00');
 
 INSERT INTO cars (brand, model, engine) VALUES
 ('bmw', 'e36 320i', 'berlina m50b20'),

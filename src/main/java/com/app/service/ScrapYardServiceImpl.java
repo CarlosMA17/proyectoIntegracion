@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.app.dtos.partdto.PartResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
+import com.app.dtos.scrapyarddto.ScrapYardResponseDto;
 import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
 import com.app.entity.Car;
 import com.app.entity.Part;
@@ -21,6 +22,7 @@ import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
 import com.app.exception.ResourceNotFoundException;
 import com.app.mappers.scrapyard.ScrapYardMapper;
+import com.app.mappers.scrapyardparts.ScrapYardPartsMapper;
 import com.app.repository.CarRepository;
 import com.app.repository.CategoryRepository;
 import com.app.repository.PartRepository;
@@ -42,6 +44,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	@Autowired CarRepository carRepository;
 	
 	@Autowired WriterRepository writerRepository;
+	@Autowired ScrapYardPartsMapper scrapYardPartsMapper;
 	@Autowired ScrapYardMapper scrapYardMapper;
 
 
@@ -52,7 +55,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		List<ScrapYardParts> scrapYardParts =  scrapYardPartsRepository.findByScrapYardId_ScrapYardId(scrapyardId);
 
 		return scrapYardParts.stream()
-								.map(scrapYardMapper::toResponse)
+								.map(scrapYardPartsMapper::toResponse)
 								.collect(Collectors.toList());
 		
 	}
@@ -63,7 +66,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		List<ScrapYardParts> parts = scrapYardPartsRepository.findByPartIdNameStartingWith(partName);
 		
 		return parts.stream()
-				.map(scrapYardMapper::toResponse)
+				.map(scrapYardPartsMapper::toResponse)
 				.collect(Collectors.toList());
 	}
 	
@@ -71,8 +74,18 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	public List<ScrapYardPartsResponseDto> getPartBySubcategoryId(Long partId) {
 		List<ScrapYardParts> parts =  scrapYardPartsRepository.findByPartId_PartIdAndReservedFalse(partId);
 		return parts.stream()
-								.map(scrapYardMapper::toResponse)
+								.map(scrapYardPartsMapper::toResponse)
 								.collect(Collectors.toList());
+	}
+	
+	@Override
+	public ScrapYardResponseDto getScrapYardByPartId(Long scrapYardPartId) {
+		ScrapYardParts part = scrapYardPartsRepository.findById(scrapYardPartId)
+	            .orElseThrow(() -> new RuntimeException("Relación no encontrada"));
+		ScrapYard scrapYard = scrapYardRepository.findById(part.getScrapYardId())	            
+				.orElseThrow(() -> new RuntimeException("Relación no encontrada"));
+
+	        return scrapYardMapper.toResponse(scrapYard);
 	}
 	
 	@Override
@@ -139,7 +152,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 					return partRepository.save(newPart);
 				});
 		
-		ScrapYardParts scrapYardPart = scrapYardMapper.toEntity(scrapYardPartRequestDto);
+		ScrapYardParts scrapYardPart = scrapYardPartsMapper.toEntity(scrapYardPartRequestDto);
 		scrapYardPart.setScrapYardId(scrapYard);
 		scrapYardPart.setPartId(part);
 		scrapYardPart.setCar(car);

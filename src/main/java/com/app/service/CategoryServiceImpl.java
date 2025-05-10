@@ -10,7 +10,7 @@ import com.app.dtos.categorydto.CategoryResponseDto;
 import com.app.entity.PartCategory;
 import com.app.entity.ScrapYardParts;
 import com.app.mappers.category.CategoryMapper;
-import com.app.mappers.scrapyard.ScrapYardMapper;
+import com.app.mappers.scrapyardparts.ScrapYardPartsMapper;
 import com.app.repository.CategoryRepository;
 import com.app.repository.WriterRepository;
 

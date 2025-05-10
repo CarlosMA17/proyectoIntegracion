@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dtos.api.ApiResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
 import com.app.dtos.scrapyarddto.ScrapYardRequestDto;
+import com.app.dtos.scrapyarddto.ScrapYardResponseDto;
 import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
 import com.app.repository.ScrapYardPartsRepository;
 import com.app.service.ScrapYardServiceImpl;
@@ -39,7 +40,7 @@ public class ScrapYardController {
 	private static final String PART_PART_ID_PATH = PART_RESOURCE + "/{partId}";
 	private static final String PART_RESERVATION_PATH = PART_RESOURCE + "/scrapyards/reservation/{scrapYardPartId}";
 	private static final String PART_DELETE_PATH = PART_RESOURCE + "/scrapyards/delete/{scrapYardPartId}";
-
+	private static final String SCRAPYARD_PART_ID_PATH = "/scrapyards/bypartid/{scrapYardPartId}";
 	
 	@Autowired
 	ScrapYardServiceImpl scrapYardService;
@@ -77,6 +78,21 @@ public class ScrapYardController {
 	}
 	
 	/**
+	 * GET SCRAPYARD BY SCRAPYARDPARTID
+	 * @param partId
+	 * @return
+	 */
+	@GetMapping(value = SCRAPYARD_PART_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<ScrapYardResponseDto>> getScrapYardByPartId(@PathVariable Long scrapYardPartId) {		
+		ScrapYardResponseDto parts = scrapYardService.getScrapYardByPartId(scrapYardPartId);
+		
+		ApiResponseDto<ScrapYardResponseDto> response = new ApiResponseDto<>("Book fetched successfully",
+				HttpStatus.OK.value(), parts);
+		
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	/**
 	 *  PUT PART TO RESERVED
 	 * @param partName
 	 */
@@ -101,6 +117,11 @@ public class ScrapYardController {
 	    return ResponseEntity.noContent().build();
 	}
 	
+	/**
+	 * 
+	 * @param scrapyardPartsRequestDto
+	 * @return
+	 */
 	@PostMapping(value = PART_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> addPart(@RequestBody ScrapYardPartsRequestDto scrapyardPartsRequestDto) {
 		System.out.println(scrapyardPartsRequestDto);

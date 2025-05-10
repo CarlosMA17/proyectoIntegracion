@@ -57,6 +57,8 @@ public class LoadDatabase {
 			ScrapYard scrapyardPolo = new ScrapYard();
 			scrapyardPolo.setName("desguaces Polo");
 			scrapyardPolo.setLocation("taco");
+			scrapyardPolo.setNumber("608894476");
+			scrapyardPolo.setSchudle("Lunes a Viernes de 08:00 a 18:00");
 			scrapYardRepository.save(scrapyardPolo);
 			
 			UserEntity userAndres = UserEntity.builder()

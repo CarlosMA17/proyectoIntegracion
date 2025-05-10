@@ -49,4 +49,10 @@ public class ScrapYard {
 	
 	@Column(nullable = false, length = 50)
 	private String location;
+	
+	@Column(nullable = false, length = 50)
+	private String number;
+	
+	@Column(nullable = false, length = 50)
+	private String schudle;
 }
