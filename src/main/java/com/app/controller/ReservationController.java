@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,19 @@ public class ReservationController {
 	ReservationServiceImpl reservationService;
 	
 	/**
+	 *  GET ALL RESERVATIONS
+	 */
+	@GetMapping(value = "/{reservationId}",  produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<ApiResponseDto<List<ReservationResponseDto>>> getAllReservations(@PathVariable Long reservationId) {
+
+		List<ReservationResponseDto> reservations = reservationService.getAllReservations(reservationId);
+		
+		ApiResponseDto<List<ReservationResponseDto>> response = new ApiResponseDto<>("parts fetched successfully",
+				HttpStatus.OK.value(), reservations);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	/**
 	 * CREATE NEW RESERVATION
 	 * @param ReservationRequestDto
 	 * @return
@@ -42,4 +57,6 @@ public class ReservationController {
 		
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
+	
+	
 }
