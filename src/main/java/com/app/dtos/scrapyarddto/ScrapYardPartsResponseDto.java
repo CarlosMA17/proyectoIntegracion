@@ -1,6 +1,8 @@
 package com.app.dtos.scrapyarddto;
 
 import com.app.dtos.carsdtos.CarResponseDto;
+import com.app.dtos.partdto.PartResponseDto;
+import com.app.entity.Part;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,8 +12,7 @@ import lombok.NoArgsConstructor;
 public class ScrapYardPartsResponseDto {
 
 	private Long scrapYardPartId;
-	private String partName;
-	private Long partId;
+	private PartResponseDto partId;
 	private Long scrapYardId;
 	private CarResponseDto car;
 	private String scrapYardName;

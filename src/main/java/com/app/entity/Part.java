@@ -18,6 +18,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 import lombok.Data;
@@ -33,6 +34,17 @@ public class Part {
 
 	@Column(nullable = false, length = 50)
 	private String name;
+	
+	@Column(nullable = true, length = 100)
+    private String imageName;
+
+	
+    @PrePersist
+    public void prePersist() {
+        if (this.imageName == null || this.imageName.isEmpty()) {
+            this.imageName = this.name.toLowerCase().replace(" ", "-") + ".png";
+        }
+    }
     
     @ManyToMany( cascade = {CascadeType.PERSIST, CascadeType.MERGE},
 	mappedBy = "parts")

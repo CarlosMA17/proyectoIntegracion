@@ -101,7 +101,6 @@ INSERT INTO parts_category (category_name) VALUES
 
 INSERT INTO parts (name, category_id) VALUES
 ('compresor de aire acondicionado', 1),
-('compresor de aire acondicionado', 1),
 ('condensador de aire', 1),
 ('ventilador de calefaccion', 1),
 ('valvula de expansion de aire acondicionado', 1),
@@ -315,6 +314,10 @@ INSERT INTO parts (name, category_id) VALUES
 ('valvula de descarga', 12),
 ('mabguera de turbo', 12),
 ('transductor de presion', 12);
+
+UPDATE parts
+SET image_name = CONCAT(LOWER(REPLACE(name, ' ', '-')), '.png')
+WHERE image_name IS NULL OR image_name = '';
 
 INSERT INTO car_parts (fk_car_id, fk_part_id) VALUES
 (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10),

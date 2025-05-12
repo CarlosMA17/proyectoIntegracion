@@ -94,9 +94,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		if (user.getRoles().stream().anyMatch(r -> r.getName().equals("SCRAPYARD"))) {
 		    scrapYardId = user.getScrapYard() != null ? user.getScrapYard().getScrapYardId() : null;
 		}
-
 		
-		return new AuthResponseDto(accessToken, scrapYardId);
+		Long userId = user.getUserId();
+		
+		return new AuthResponseDto(accessToken, scrapYardId, userId);
 	}
 	
 	public AuthResponseDto register(AuthLoginRequestDto registerDto) {
@@ -123,8 +124,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	    SecurityContextHolder.getContext().setAuthentication(authentication);
 
 	    String token = jwtTokenProvider.generateToken(authentication);
+		UserEntity user = userRepository.findUserEntityByUsername(registerDto.getUsername())
+			    .orElseThrow(() -> new UsernameNotFoundException("User not found"));	
 
-	    return new AuthResponseDto(token, null);
+	    return new AuthResponseDto(token, null, user.getUserId());
 	}
 	
 }

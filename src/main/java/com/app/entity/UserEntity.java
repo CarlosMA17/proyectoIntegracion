@@ -1,6 +1,7 @@
 package com.app.entity;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
@@ -30,7 +32,7 @@ public class UserEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long userId;
 	
 	@Column(unique = true)
 	private String username;
@@ -59,4 +61,7 @@ public class UserEntity {
 									inverseJoinColumns = @JoinColumn(name = "role_id"))
 	@Builder.Default
 	private Set<Role> roles = new HashSet<>();
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<Reservation> reservations;
 }

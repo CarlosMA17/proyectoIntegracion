@@ -1,6 +1,7 @@
 package com.app.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -17,18 +18,22 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-//@IdClass(ScrapYardPartsId .class)
-public class ScrapYardParts implements Serializable {
+@NoArgsConstructor
+@AllArgsConstructor
+public class ScrapYardParts {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long scrapYardPartId;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="part_id")
 	private Part partId;
 	
@@ -41,12 +46,13 @@ public class ScrapYardParts implements Serializable {
 	@JsonManagedReference
 	private Car car;
 	
+	@OneToMany(mappedBy = "scrapYardPart", fetch = FetchType.LAZY)
+	private List<Reservation> reservations;
+	
 	private int wearLevel;
 	private float price;
 	private boolean reserved;
 	
-	public ScrapYardParts() {}
-
 	public ScrapYardParts(Part partId, ScrapYard scrapYardId, int wearLevel, float price, boolean reserved) {
 		super();
 		this.partId = partId;
