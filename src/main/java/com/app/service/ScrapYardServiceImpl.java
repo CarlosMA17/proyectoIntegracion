@@ -26,6 +26,7 @@ import com.app.mappers.scrapyardparts.ScrapYardPartsMapper;
 import com.app.repository.CarRepository;
 import com.app.repository.CategoryRepository;
 import com.app.repository.PartRepository;
+import com.app.repository.ReservationRepository;
 import com.app.repository.ScrapYardPartsRepository;
 import com.app.repository.ScrapYardRepository;
 import com.app.repository.WriterRepository;
@@ -38,6 +39,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	private final static String WRITER_NOT_FOUND = "Writer with id %d not found";
 	
 	@Autowired ScrapYardPartsRepository scrapYardPartsRepository;
+	@Autowired ReservationRepository reservationRepository;
 	@Autowired ScrapYardRepository scrapYardRepository;
 	@Autowired CategoryRepository categoryRepository;
 	@Autowired PartRepository partRepository;
@@ -91,10 +93,9 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	@Override
 	public void putPartToReserved(Long scrapYardPartId) {
 		
-        Optional<ScrapYardParts> optional = scrapYardPartsRepository.findById(scrapYardPartId);
-        
-        ScrapYardParts part = optional.get();
-        
+        ScrapYardParts part = scrapYardPartsRepository.findById(scrapYardPartId)
+				.orElseThrow(() -> new ResourceNotFoundException("part not found" ));
+                
         if (part.isReserved()) {
             throw new RuntimeException("La pieza ya está reservada.");
         }
@@ -115,7 +116,8 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	
 	@Override
 	public void deletePart(Long scrapYardPartId) {
-				
+		
+		reservationRepository.deleteByScrapYardPart(scrapYardPartId);
         scrapYardPartsRepository.deleteById(scrapYardPartId);
 	}
 

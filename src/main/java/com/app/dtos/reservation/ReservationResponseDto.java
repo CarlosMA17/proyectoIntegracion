@@ -2,6 +2,8 @@ package com.app.dtos.reservation;
 
 import java.time.LocalDate;
 
+import com.app.dtos.scrapyarddto.ScrapYardPartsResponseDto;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,5 +15,5 @@ public class ReservationResponseDto {
     private String userPhone;
     private Long userId;
     private LocalDate  date;
-    private Long scrapYardPartId;
+    private ScrapYardPartsResponseDto scrapYardPart;
 }

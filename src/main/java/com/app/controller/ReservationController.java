@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,10 +34,10 @@ public class ReservationController {
 	/**
 	 *  GET ALL RESERVATIONS
 	 */
-	@GetMapping(value = "/{reservationId}",  produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<ApiResponseDto<List<ReservationResponseDto>>> getAllReservations(@PathVariable Long reservationId) {
+	@GetMapping(value = "/{userId}",  produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<ApiResponseDto<List<ReservationResponseDto>>> getAllReservations(@PathVariable Long userId) {
 
-		List<ReservationResponseDto> reservations = reservationService.getAllReservations(reservationId);
+		List<ReservationResponseDto> reservations = reservationService.getAllReservations(userId);
 		
 		ApiResponseDto<List<ReservationResponseDto>> response = new ApiResponseDto<>("parts fetched successfully",
 				HttpStatus.OK.value(), reservations);
@@ -58,5 +59,16 @@ public class ReservationController {
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 	
-	
+	/**
+	 * CANCEL A RESERVATION
+	 * @param ReservationRequestDto
+	 * @return
+	 */
+	@DeleteMapping(value = "/{reservationId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<ReservationResponseDto>> cancelReservation(@PathVariable Long reservationId) {
+		
+		reservationService.cancelReservation(reservationId);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

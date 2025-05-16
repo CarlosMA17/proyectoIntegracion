@@ -16,5 +16,6 @@ public interface ScrapYardPartsRepository extends JpaRepository<ScrapYardParts, 
 	List<ScrapYardParts> findByPartIdNameStartingWith(String partName);
 	List<ScrapYardParts> findByPartId_PartIdAndReservedFalse(Long partId);
 	List<ScrapYardParts> findByScrapYardId_ScrapYardId(Long scrapYardId);
+	ScrapYardParts findByReservations_ReservationId(Long reservationId);
 
 }

@@ -1,6 +1,7 @@
 package com.app.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.app.entity.ScrapYardParts;
 import com.app.entity.UserEntity;
 import com.app.exception.ResourceNotFoundException;
 import com.app.mappers.reservation.ReservationMapper;
+import com.app.mappers.scrapyardparts.ScrapYardPartsMapper;
 import com.app.repository.ReservationRepository;
 import com.app.repository.ScrapYardPartsRepository;
 import com.app.repository.UserRepository;
@@ -24,6 +26,7 @@ public class ReservationServiceImpl implements ReservationService {
 	@Autowired UserRepository userRepository;
 	@Autowired ReservationRepository reservationRepository;
 	@Autowired ReservationMapper reservationMapper;
+	@Autowired ScrapYardPartsMapper scrapYardPartsMapper;
 
 	@Override
 	public ReservationResponseDto createReservation(ReservationRequestDto reservationRequestDto) {
@@ -53,12 +56,28 @@ public class ReservationServiceImpl implements ReservationService {
 			    .map(reservation -> {
 			        ReservationResponseDto dto = reservationMapper.toResponse(reservation);
 			        dto.setUserId(user.getUserId());
-			        dto.setScrapYardPartId(reservation.getScrapYardPart().getScrapYardPartId());
+			        dto.setScrapYardPart(scrapYardPartsMapper.toResponse(reservation.getScrapYardPart()));
 			        return dto;
 			    })
 			    .collect(Collectors.toList());
 		
 		return reservations;
 	}
+	
+	@Override
+	public void cancelReservation(Long reservationId) {
+		
+		
+        ScrapYardParts part = scrapYardPartsRepository.findByReservations_ReservationId(reservationId);
+                
+        if (!part.isReserved()) {
+            throw new RuntimeException("La pieza no esta reservada.");
+        }
 
+        part.setReserved(false);
+
+		scrapYardPartsRepository.save(part);
+		reservationRepository.deleteById(reservationId);
+		
+	}
 }

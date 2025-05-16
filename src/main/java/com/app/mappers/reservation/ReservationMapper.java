@@ -16,7 +16,7 @@ public interface ReservationMapper {
 	Reservation toEntity(ReservationRequestDto reservationRequestDto);
 
 	@Mapping(target = "userId", ignore = true)
-	@Mapping(target = "scrapYardPartId", ignore = true)
+	@Mapping(target = "scrapYardPart", ignore = true)
 	ReservationResponseDto toResponse(Reservation reservation);
 
 }

@@ -8,4 +8,5 @@ import com.app.dtos.reservation.ReservationResponseDto;
 public interface ReservationService {
 	ReservationResponseDto createReservation(ReservationRequestDto reservationRequestDto);
 	List<ReservationResponseDto> getAllReservations(Long reservationId);
+	void cancelReservation(Long reservationId);
 }
