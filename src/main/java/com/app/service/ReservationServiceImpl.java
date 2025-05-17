@@ -80,4 +80,21 @@ public class ReservationServiceImpl implements ReservationService {
 		reservationRepository.deleteById(reservationId);
 		
 	}
+	
+	@Override
+	public List<ReservationResponseDto> getAllReservationsByScrapYard(Long scrapYardId) {
+
+		
+		List<Reservation> reservationsResponse = reservationRepository.findByScrapYardPart_ScrapYardId_ScrapYardId(scrapYardId);
+		
+		List<ReservationResponseDto> reservations = reservationsResponse.stream()
+			    .map(reservation -> {
+			        ReservationResponseDto dto = reservationMapper.toResponse(reservation);
+			        dto.setScrapYardPart(scrapYardPartsMapper.toResponse(reservation.getScrapYardPart()));
+			        return dto;
+			    })
+			    .collect(Collectors.toList());
+		
+		return reservations;
+	}
 }

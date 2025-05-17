@@ -9,4 +9,5 @@ public interface ReservationService {
 	ReservationResponseDto createReservation(ReservationRequestDto reservationRequestDto);
 	List<ReservationResponseDto> getAllReservations(Long reservationId);
 	void cancelReservation(Long reservationId);
+	List<ReservationResponseDto> getAllReservationsByScrapYard(Long scrapYardId);
 }

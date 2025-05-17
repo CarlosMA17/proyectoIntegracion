@@ -19,4 +19,6 @@ public interface ReservationRepository  extends JpaRepository<Reservation, Long>
     @Transactional
     @Query("DELETE FROM Reservation r WHERE r.scrapYardPart.scrapYardPartId = :scrapYardPartId")
 	void deleteByScrapYardPart(Long scrapYardPartId);
+    
+	List<Reservation> findByScrapYardPart_ScrapYardId_ScrapYardId(Long scrapYardId);
 }

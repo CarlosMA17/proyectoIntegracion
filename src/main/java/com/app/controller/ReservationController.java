@@ -45,6 +45,19 @@ public class ReservationController {
     }
 	
 	/**
+	 *  GET ALL RESERVATIONS
+	 */
+	@GetMapping(value = "/scrapyard/{scrapYardId}",  produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<ApiResponseDto<List<ReservationResponseDto>>> getAllReservationsByScrapYard(@PathVariable Long scrapYardId) {
+
+		List<ReservationResponseDto> reservations = reservationService.getAllReservationsByScrapYard(scrapYardId);
+		
+		ApiResponseDto<List<ReservationResponseDto>> response = new ApiResponseDto<>("parts fetched successfully",
+				HttpStatus.OK.value(), reservations);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	/**
 	 * CREATE NEW RESERVATION
 	 * @param ReservationRequestDto
 	 * @return
