@@ -18,11 +18,11 @@ import com.app.service.CarServiceImpl;
 import com.app.service.PartServiceImpl;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/parts")
 @CrossOrigin(origins = "http://localhost:5173")
 public class PartController {
 	
-	private static final String PART_RESOURCE = "/parts/{carId}/{categoryId}";
+	private static final String PART_RESOURCE = "/{carId}/{categoryId}";
 
 
 	@Autowired
@@ -34,11 +34,23 @@ public class PartController {
 	 *  GET ALL PARTS BY CAR
 +	 */
 	@GetMapping(value = PART_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<ApiResponseDto<List<PartResponseDto>>> getAllParts(@PathVariable long carId, @PathVariable long categoryId) {
+	public ResponseEntity<ApiResponseDto<List<PartResponseDto>>> getAllPartsByCar(@PathVariable long carId, @PathVariable long categoryId) {
 		List<PartResponseDto> brands = partService.getAllPartsByCar(carId, categoryId);
 
 		ApiResponseDto<List<PartResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
 				HttpStatus.OK.value(), brands);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+	
+	/**
+	 *  GET ALL PARTS
++	 */
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)	
+	public ResponseEntity<ApiResponseDto<List<PartResponseDto>>> getAllPartsByCar() {
+		List<PartResponseDto> parts = partService.getAllParts();
+
+		ApiResponseDto<List<PartResponseDto>> response = new ApiResponseDto<>("parts fetched successfully",
+				HttpStatus.OK.value(), parts);
 		return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

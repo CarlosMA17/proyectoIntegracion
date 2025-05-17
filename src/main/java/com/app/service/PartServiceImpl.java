@@ -24,5 +24,12 @@ public class PartServiceImpl implements PartService {
 								.map(partMapper::toResponse)
 								.collect(Collectors.toList());
 	}
-
+	
+	@Override
+	public List<PartResponseDto> getAllParts() {
+		List<Part> parts =  partRepository.findAll();
+		return parts.stream()
+								.map(partMapper::toResponse)
+								.collect(Collectors.toList());
+	}
 }

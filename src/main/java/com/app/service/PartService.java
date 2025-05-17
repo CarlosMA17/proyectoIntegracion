@@ -8,4 +8,6 @@ public interface PartService {
 
 	List<PartResponseDto> getAllPartsByCar(Long carId, Long categoryId);
 
+	List<PartResponseDto> getAllParts();
+
 }
