@@ -18,6 +18,7 @@ import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
 import com.app.entity.Car;
 import com.app.entity.Part;
 import com.app.entity.PartCategory;
+import com.app.entity.Reservation;
 import com.app.entity.ScrapYard;
 import com.app.entity.ScrapYardParts;
 import com.app.exception.ResourceNotFoundException;
@@ -97,12 +98,15 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 				.orElseThrow(() -> new ResourceNotFoundException("part not found" ));
                 
         if (part.isReserved()) {
-            throw new RuntimeException("La pieza ya está reservada.");
+        	
+        	part.setReserved(false);
+        } else if (!part.isReserved()) {
+        	part.setReserved(true);
+        	
         }
 
-        part.setReserved(true);
 
-		ScrapYardParts parts =  scrapYardPartsRepository.save(part);
+		scrapYardPartsRepository.save(part);
 	}
 	
 	@Override
@@ -116,7 +120,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	
 	@Override
 	public void deletePart(Long scrapYardPartId) {
-		
+
 		reservationRepository.deleteByScrapYardPart(scrapYardPartId);
         scrapYardPartsRepository.deleteById(scrapYardPartId);
 	}
