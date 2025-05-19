@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dtos.reservation.ReservationRequestDto;
 import com.app.dtos.reservation.ReservationResponseDto;
@@ -29,19 +30,28 @@ public class ReservationServiceImpl implements ReservationService {
 	@Autowired ScrapYardPartsMapper scrapYardPartsMapper;
 
 	@Override
+	@Transactional
 	public ReservationResponseDto createReservation(ReservationRequestDto reservationRequestDto) {
 
-		UserEntity user = userRepository.findById(reservationRequestDto.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + reservationRequestDto.getUserId()));
+	    UserEntity user = userRepository.findById(reservationRequestDto.getUserId())
+	            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + reservationRequestDto.getUserId()));
 
-        ScrapYardParts part = scrapYardPartsRepository.findById(reservationRequestDto.getScrapYardPartId())
-                .orElseThrow(() -> new ResourceNotFoundException("ScrapYardPart not found with id: " + reservationRequestDto.getScrapYardPartId()));
+	    ScrapYardParts part = scrapYardPartsRepository.findById(reservationRequestDto.getScrapYardPartId())
+	            .orElseThrow(() -> new ResourceNotFoundException("ScrapYardPart not found with id: " + reservationRequestDto.getScrapYardPartId()));
 
-        Reservation reservation = reservationMapper.toEntity(reservationRequestDto);
-        reservation.setUser(user);
-        reservation.setScrapYardPart(part);
+	    Reservation reservation = reservationMapper.toEntity(reservationRequestDto);
+	    reservation.setUser(user);
+	    reservation.setScrapYardPart(part);
 
-        return reservationMapper.toResponse(reservationRepository.save(reservation));
+	    // Guardar primero la reserva (ella no depende de que la pieza tenga reservation todavía)
+	    Reservation savedReservation = reservationRepository.save(reservation);
+
+	    // Ahora actualizar la pieza con la reserva
+	    part.setReservation(savedReservation);
+	    part.setReserved(true);
+	    scrapYardPartsRepository.save(part);
+
+	    return reservationMapper.toResponse(savedReservation);
 	}
 
 	@Override
@@ -56,7 +66,6 @@ public class ReservationServiceImpl implements ReservationService {
 			    .map(reservation -> {
 			        ReservationResponseDto dto = reservationMapper.toResponse(reservation);
 			        dto.setUserId(user.getUserId());
-			        dto.setScrapYardPart(scrapYardPartsMapper.toResponse(reservation.getScrapYardPart()));
 			        return dto;
 			    })
 			    .collect(Collectors.toList());
@@ -65,20 +74,23 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 	
 	@Override
+	@Transactional
 	public void cancelReservation(Long reservationId) {
-		
-		
-        ScrapYardParts part = scrapYardPartsRepository.findByReservations_ReservationId(reservationId);
-                
-        if (!part.isReserved()) {
-            throw new RuntimeException("La pieza no esta reservada.");
-        }
 
-        part.setReserved(false);
+	    ScrapYardParts part = scrapYardPartsRepository.findByReservation_ReservationId(reservationId);
+	    if (part == null) {
+	        throw new ResourceNotFoundException("Pieza no encontrada con esa reserva");
+	    }
 
-		scrapYardPartsRepository.save(part);
-		reservationRepository.deleteById(reservationId);
-		
+	    if (!part.isReserved()) {
+	        throw new RuntimeException("La pieza no está reservada.");
+	    }
+
+	    part.setReservation(null);
+	    part.setReserved(false);
+
+	    scrapYardPartsRepository.save(part);
+	    reservationRepository.deleteById(reservationId);
 	}
 	
 	@Override

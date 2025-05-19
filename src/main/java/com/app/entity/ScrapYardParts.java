@@ -19,6 +19,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,8 +47,8 @@ public class ScrapYardParts {
 	@JsonManagedReference
 	private Car car;
 	
-	@OneToMany(mappedBy = "scrapYardPart", fetch = FetchType.LAZY)
-	private List<Reservation> reservations;
+    @OneToOne(mappedBy = "scrapYardPart", cascade = CascadeType.REMOVE)
+	private Reservation reservation;
 	
 	private int wearLevel;
 	private float price;

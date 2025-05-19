@@ -32,6 +32,8 @@ import com.app.repository.ScrapYardPartsRepository;
 import com.app.repository.ScrapYardRepository;
 import com.app.repository.WriterRepository;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
 public class ScrapYardServiceImpl implements ScrapYardService {
@@ -90,24 +92,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 
 	        return scrapYardMapper.toResponse(scrapYard);
 	}
-	
-	@Override
-	public void putPartToReserved(Long scrapYardPartId) {
-		
-        ScrapYardParts part = scrapYardPartsRepository.findById(scrapYardPartId)
-				.orElseThrow(() -> new ResourceNotFoundException("part not found" ));
-                
-        if (part.isReserved()) {
-        	
-        	part.setReserved(false);
-        } else if (!part.isReserved()) {
-        	part.setReserved(true);
-        	
-        }
 
-
-		scrapYardPartsRepository.save(part);
-	}
 	
 	@Override
 	public ScrapYard findById(Long idEntity) {
@@ -121,7 +106,6 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	@Override
 	public void deletePart(Long scrapYardPartId) {
 
-		reservationRepository.deleteByScrapYardPart(scrapYardPartId);
         scrapYardPartsRepository.deleteById(scrapYardPartId);
 	}
 
@@ -166,4 +150,23 @@ public class ScrapYardServiceImpl implements ScrapYardService {
         scrapYardPartsRepository.save(scrapYardPart);
 	}
 	
+	@Override
+	public void restockScrapYardPart(Long scrapYardPartId) {
+		
+		
+        ScrapYardParts part = scrapYardPartsRepository.findById(scrapYardPartId)
+				.orElseThrow(() -> new RuntimeException("pieza no encontrada"));
+;
+        
+                
+        if (!part.isReserved()) {
+            throw new RuntimeException("La pieza no esta reservada.");
+        }
+
+        part.setReserved(false);
+
+		scrapYardPartsRepository.save(part);
+		reservationRepository.deleteByScrapYardPart(scrapYardPartId);
+		
+	}	
 }

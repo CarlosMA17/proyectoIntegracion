@@ -93,14 +93,14 @@ public class ScrapYardController {
 	}
 	
 	/**
-	 *  PUT PART TO RESERVED
+	 *  RESTOCK RESERVATION
 	 * @param partName
 	 */
 	@PutMapping(value = PART_RESERVATION_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<Void>> putScrapYardPartReserved(@PathVariable Long scrapYardPartId) {	
+	public ResponseEntity<ApiResponseDto<Void>> restockScrapYardPart(@PathVariable Long scrapYardPartId) {	
 
 	    
-	    scrapYardService.putPartToReserved(scrapYardPartId);
+	    scrapYardService.restockScrapYardPart(scrapYardPartId);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

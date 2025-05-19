@@ -58,6 +58,7 @@ public class SecurityConfig {
 				.requestMatchers(HttpMethod.POST, "/api/scrapyardparts").hasRole("SCRAPYARD")
 				.requestMatchers(HttpMethod.POST, "/api/reservation").hasRole("USER")
 				.requestMatchers(HttpMethod.GET, "/api/reservation").hasRole("USER")
+				.requestMatchers(HttpMethod.DELETE, "/api/reservation/{reservationId}").hasRole("USER")
 				.requestMatchers(HttpMethod.GET, "/api/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/api/**").permitAll()
 				.requestMatchers(HttpMethod.PUT, "/api/**").permitAll()

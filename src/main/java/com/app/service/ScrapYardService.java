@@ -20,8 +20,6 @@ public interface ScrapYardService {
 
 	List<ScrapYardPartsResponseDto> getAllPartsBySY(Long scrapyardId);
 
-	void putPartToReserved(Long scrapYardPartId);
-
 
 	ScrapYard findById(Long idEntity);
 
@@ -32,4 +30,7 @@ public interface ScrapYardService {
 
 
 	ScrapYardResponseDto getScrapYardByPartId(Long scrapYardPartId);
+
+
+	void restockScrapYardPart(Long scrapYardPartId);
 }
