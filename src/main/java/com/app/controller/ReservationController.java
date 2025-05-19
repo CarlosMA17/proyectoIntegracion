@@ -63,7 +63,7 @@ public class ReservationController {
 	 * @return
 	 */
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<ReservationResponseDto>> addPart(@RequestBody ReservationRequestDto reservationRequestDto) {
+	public ResponseEntity<ApiResponseDto<ReservationResponseDto>> addReservartion(@RequestBody ReservationRequestDto reservationRequestDto) {
 		
 		ReservationResponseDto reservation = reservationService.createReservation(reservationRequestDto);
 		ApiResponseDto<ReservationResponseDto> response = new ApiResponseDto<>("reservation created successfully",
