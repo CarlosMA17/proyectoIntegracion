@@ -39,7 +39,7 @@ public class Reservation {
     private String userPhone;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id", nullable = false)
+	@JoinColumn(name = "user_id", nullable = false)
 	@JsonManagedReference
     private UserEntity user;
 	

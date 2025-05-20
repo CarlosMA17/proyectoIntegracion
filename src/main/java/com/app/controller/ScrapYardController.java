@@ -41,6 +41,8 @@ public class ScrapYardController {
 	private static final String PART_RESERVATION_PATH = PART_RESOURCE + "/scrapyards/reservation/{scrapYardPartId}";
 	private static final String PART_DELETE_PATH = PART_RESOURCE + "/scrapyards/delete/{scrapYardPartId}";
 	private static final String SCRAPYARD_PART_ID_PATH = "/scrapyards/bypartid/{scrapYardPartId}";
+	private static final String UPDATE_PART = PART_RESOURCE + "/update";
+
 	
 	@Autowired
 	ScrapYardServiceImpl scrapYardService;
@@ -101,6 +103,18 @@ public class ScrapYardController {
 
 	    
 	    scrapYardService.restockScrapYardPart(scrapYardPartId);
+		
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	/**
+	 *  UPDATE PART
+	 * @param partName
+	 */
+	@PutMapping(value = UPDATE_PART, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<ApiResponseDto<Void>> updatePart(@RequestBody ScrapYardPartsRequestDto scrapyardPartsRequestDto) {	
+	    
+	    scrapYardService.updatePart(scrapyardPartsRequestDto);
 		
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

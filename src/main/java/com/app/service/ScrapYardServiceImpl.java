@@ -168,5 +168,22 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		scrapYardPartsRepository.save(part);
 		reservationRepository.deleteByScrapYardPart(scrapYardPartId);
 		
-	}	
+	}
+	
+	@Override
+	public void updatePart(ScrapYardPartsRequestDto scrapYardPart) {
+		
+		
+
+        ScrapYardParts part = scrapYardPartsRepository.findById(scrapYardPart.getScrapyardPartId())
+				.orElseThrow(() -> new RuntimeException("pieza no encontrada"));
+		
+        part.setPrice(scrapYardPart.getPrice());
+        part.setWearLevel(scrapYardPart.getWearLevel());
+        part.setReserved(scrapYardPart.isReserved());
+        part.setPartId(partRepository.findByName(scrapYardPart.getPartName()).orElseThrow());
+        part.setCar(carRepository.findById(scrapYardPart.getCarId()).orElseThrow());
+
+		scrapYardPartsRepository.save(part);
+	}
 }

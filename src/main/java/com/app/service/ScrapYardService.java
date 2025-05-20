@@ -33,4 +33,7 @@ public interface ScrapYardService {
 
 
 	void restockScrapYardPart(Long scrapYardPartId);
+
+
+	void updatePart(ScrapYardPartsRequestDto scrapYardPart);
 }

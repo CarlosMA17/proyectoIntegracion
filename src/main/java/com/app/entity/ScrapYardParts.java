@@ -94,11 +94,11 @@ public class ScrapYardParts {
 		this.scrapYardId = scrapYardId;
 	}
 
-	public int getwearLevel() {
+	public int getWearLevel() {
 		return wearLevel;
 	}
 
-	public void setwearLevel(int wearLevel) {
+	public void setWearLevel(int wearLevel) {
 		this.wearLevel = wearLevel;
 	}
 
