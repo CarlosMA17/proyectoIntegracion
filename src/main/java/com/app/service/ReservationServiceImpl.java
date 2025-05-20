@@ -97,7 +97,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<ReservationResponseDto> getAllReservationsByScrapYard(Long scrapYardId) {
 
 		
-		List<Reservation> reservationsResponse = reservationRepository.findByScrapYardPart_ScrapYardId_ScrapYardId(scrapYardId);
+		List<Reservation> reservationsResponse = reservationRepository.findByScrapYardPart_ScrapYard_ScrapYardId(scrapYardId);
 		
 		List<ReservationResponseDto> reservations = reservationsResponse.stream()
 			    .map(reservation -> {

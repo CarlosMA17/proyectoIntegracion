@@ -1,13 +1,13 @@
-INSERT INTO scrap_yards (name, location, number, schudle) VALUES
-('desguaces tenerife', 'taco', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00'),
-('desguaces tenerife', 'sur', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00'),
-('desguaces tenerife', 'arafo', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00'),
-('desguaces polo', 'taco', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00'),
-('desguaces insulares', 'taco', '608894476', 'Lunes a Viernes de 08:00 a 18:00'),
-('desguaces insulares', 'santa cruz', '608894476', 'Lunes a Viernes de 08:00 a 18:00'),
-('desguaces insulares', 'los cristianos', '608894476', 'Lunes a Viernes de 08:00 a 18:00'),
-('desguaces insulares', 'aguagarcia', '922 681 136', 'Lunes a Viernes de 08:00 a 18:00'),
-('desguaces geneto', 'geneto', '922 681 136', 'Lunes a Viernes de 08:00 a 18:00');
+INSERT INTO scrap_yards (name, location, number, schudle, latitude, longitude) VALUES
+('desguaces tenerife', 'taco', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00', 28.44837611906685, -16.293051643606276),
+('desguaces tenerife', 'sur', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00', 28.05942344740714, -16.669712217049298),
+('desguaces tenerife', 'arafo', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00', 28.330008007823974, -16.37643420060455),
+('desguaces polo', 'taco', '+34 600 123 456', 'Lunes a Viernes de 08:00 a 18:00', 28.448111063389362, -16.289824445218024),
+('desguaces insulares', 'taco', '608894476', 'Lunes a Viernes de 08:00 a 18:00', 28.46942690371484, -16.28954528967948),
+('desguaces insulares', 'santa cruz', '608894476', 'Lunes a Viernes de 08:00 a 18:00', 28.46947724493311, -16.289582378593412),
+('desguaces insulares', 'los cristianos', '608894476', 'Lunes a Viernes de 08:00 a 18:00', 28.08561672796857, -16.504304652559792),
+('desguaces insulares', 'aguagarcia', '922 681 136', 'Lunes a Viernes de 08:00 a 18:00', 28.381314710128795, -16.52866746282472),
+('desguaces geneto', 'geneto', '922 681 136', 'Lunes a Viernes de 08:00 a 18:00', 28.455120956840634, -16.31709494351339);
 
 INSERT INTO cars (brand, model, engine) VALUES
 ('bmw', 'e36 320i', 'berlina m50b20'),

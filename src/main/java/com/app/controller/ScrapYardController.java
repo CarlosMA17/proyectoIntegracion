@@ -57,7 +57,7 @@ public class ScrapYardController {
 	 *  GET ALL PARTS
 	 */
 	@GetMapping(value = PART_SY_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)	
-	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getAllParts(@PathVariable Long scrapYardId) {
+	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getAllPartsByScrapYard(@PathVariable Long scrapYardId) {
 
 		List<ScrapYardPartsResponseDto> scrapYardParts = scrapYardService.getAllPartsBySY(scrapYardId);
 		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("parts fetched successfully",

@@ -57,7 +57,7 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	public List<ScrapYardPartsResponseDto> getAllPartsBySY(Long scrapyardId) {
 		
 
-		List<ScrapYardParts> scrapYardParts =  scrapYardPartsRepository.findByScrapYardId_ScrapYardId(scrapyardId);
+		List<ScrapYardParts> scrapYardParts =  scrapYardPartsRepository.findByScrapYard_ScrapYardId(scrapyardId);
 
 		return scrapYardParts.stream()
 								.map(scrapYardPartsMapper::toResponse)

@@ -11,4 +11,6 @@ public class ScrapYardResponseDto {
 	private String location;
 	private String number;
 	private String schudle;
+    private Double latitude;
+    private Double longitude;
 }

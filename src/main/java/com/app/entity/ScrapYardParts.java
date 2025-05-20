@@ -40,7 +40,7 @@ public class ScrapYardParts {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="scrap_yard_id")
-	private ScrapYard scrapYardId;
+	private ScrapYard scrapYard;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "car_id", nullable = false)
@@ -57,7 +57,7 @@ public class ScrapYardParts {
 	public ScrapYardParts(Part partId, ScrapYard scrapYardId, int wearLevel, float price, boolean reserved) {
 		super();
 		this.partId = partId;
-		this.scrapYardId = scrapYardId;
+		this.scrapYard = scrapYardId;
 		this.wearLevel = wearLevel;
 		this.price = price;
 		this.reserved = reserved;
@@ -83,15 +83,15 @@ public class ScrapYardParts {
 	}
 
 	public String getScrapYardName() {
-		return scrapYardId.getName();
+		return scrapYard.getName();
 	}
 	
 	public String getScrapYardLocation() {
-		return scrapYardId.getLocation();
+		return scrapYard.getLocation();
 	}
 
 	public void setScrapYardId(ScrapYard scrapYardId) {
-		this.scrapYardId = scrapYardId;
+		this.scrapYard = scrapYardId;
 	}
 
 	public int getWearLevel() {
@@ -115,7 +115,7 @@ public class ScrapYardParts {
 	}
 	
 	public Long getScrapYardId() {
-	    return scrapYardId.getScrapYardId();
+	    return scrapYard.getScrapYardId();
 	}
 	
 }

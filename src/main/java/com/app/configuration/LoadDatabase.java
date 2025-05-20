@@ -59,6 +59,9 @@ public class LoadDatabase {
 			scrapyardPolo.setLocation("taco");
 			scrapyardPolo.setNumber("608894476");
 			scrapyardPolo.setSchudle("Lunes a Viernes de 08:00 a 18:00");
+			scrapyardPolo.setLatitude(28.447994931901405);
+			scrapyardPolo.setLongitude(-16.289774766054297);
+			
 			scrapYardRepository.save(scrapyardPolo);
 			
 			UserEntity userAndres = UserEntity.builder()

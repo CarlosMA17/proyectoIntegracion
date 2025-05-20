@@ -33,7 +33,7 @@ public class ScrapYard {
     private Long scrapYardId;
 
 	@OneToMany(
-			mappedBy = "scrapYardId",
+			mappedBy = "scrapYard",
 		cascade = CascadeType.ALL,
 		orphanRemoval = true
 		)
@@ -55,4 +55,10 @@ public class ScrapYard {
 	
 	@Column(nullable = false, length = 50)
 	private String schudle;
+	
+	@Column(nullable = false, length = 100)
+    private Double latitude;
+	
+	@Column(nullable = false, length = 100)
+    private Double longitude;
 }

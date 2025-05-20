@@ -13,10 +13,8 @@ public class ScrapYardPartsResponseDto {
 
 	private Long scrapYardPartId;
 	private PartResponseDto partId;
-	private Long scrapYardId;
 	private CarResponseDto car;
-	private String scrapYardName;
-	private String scrapYardLocation;
+	private ScrapYardResponseDto scrapYard;
 	private float price;
 	private int wearLevel;
 	private String category;
