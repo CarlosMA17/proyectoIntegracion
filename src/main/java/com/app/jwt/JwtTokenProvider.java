@@ -23,7 +23,7 @@ public class JwtTokenProvider {
 	@Value("${security.jwt.key.private}")
 	private String privateKey;
 	
-	private static final long JWT_EXPIRATION_DATE = 3600000;  // milisegundos ; 1h = 3600s
+	private static final long JWT_EXPIRATION_DATE = 60000;  // milisegundos ; 1h = 3600s
 	
 	public String generateToken(Authentication authentication) {
 		String username = authentication.getName();
@@ -42,6 +42,18 @@ public class JwtTokenProvider {
 				   .expiration(expireDate)
 				   .signWith(getSignInKey(), Jwts.SIG.HS256)
 				   .compact();
+	}
+	
+	public String generateToken(String username) {
+	    Date currentDate = new Date();
+	    Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION_DATE);
+
+	    return Jwts.builder()
+	               .subject(username)
+	               .issuedAt(currentDate)
+	               .expiration(expireDate)
+	               .signWith(getSignInKey(), Jwts.SIG.HS256)
+	               .compact();
 	}
 	
 	private SecretKey getSignInKey() {

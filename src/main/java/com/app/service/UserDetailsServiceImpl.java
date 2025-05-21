@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.app.entity.RefreshToken;
 import com.app.entity.Role;
 import com.app.entity.UserEntity;
 import com.app.dtos.auth.AuthLoginRequestDto;
@@ -41,6 +42,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Autowired
 	JwtTokenProvider jwtTokenProvider;
+	
+	@Autowired
+	private RefreshTokenServiceImpl refreshTokenService;
 	
 	public Collection<GrantedAuthority> mapToAuthorities(Set<Role> roles) {
 		return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_".concat(role.getName())))
@@ -78,35 +82,32 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	}
 	
 	public AuthResponseDto login(AuthLoginRequestDto authLoginRequest) {
-		
-		System.out.println("Auth--> " + authLoginRequest.getUsername());
-		
-		Authentication authentication = this.authenticate(authLoginRequest.getUsername(), authLoginRequest.getPassword());
-		
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		
-		String accessToken = jwtTokenProvider.generateToken(authentication);
-		
-		UserEntity user = userRepository.findUserEntityByUsername(authLoginRequest.getUsername())
-			    .orElseThrow(() -> new UsernameNotFoundException("User not found"));		
-		
-		Long scrapYardId = null;
-		if (user.getRoles().stream().anyMatch(r -> r.getName().equals("SCRAPYARD"))) {
-		    scrapYardId = user.getScrapYard() != null ? user.getScrapYard().getScrapYardId() : null;
-		}
-		
-		Long userId = user.getUserId();
-		
-		return new AuthResponseDto(accessToken, scrapYardId, userId);
+	    Authentication authentication = this.authenticate(authLoginRequest.getUsername(), authLoginRequest.getPassword());
+
+	    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+	    String accessToken = jwtTokenProvider.generateToken(authentication);
+
+	    UserEntity user = userRepository.findUserEntityByUsername(authLoginRequest.getUsername())
+	        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+	    RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getUserId());
+
+	    Long scrapYardId = null;
+	    if (user.getRoles().stream().anyMatch(r -> r.getName().equals("SCRAPYARD"))) {
+	        scrapYardId = user.getScrapYard() != null ? user.getScrapYard().getScrapYardId() : null;
+	    }
+
+	    return new AuthResponseDto(accessToken, refreshToken.getToken(), scrapYardId, user.getUserId());
 	}
 	
 	public AuthResponseDto register(AuthLoginRequestDto registerDto) {
 	    if (userRepository.findUserEntityByUsername(registerDto.getUsername()).isPresent()) {
 	        throw new RuntimeException("Username is already taken");
 	    }
-	    
+
 	    Role roleUser = roleRepository.findById(2L)
-                .orElseThrow(() -> new RuntimeException("Role USER not found"));
+	        .orElseThrow(() -> new RuntimeException("Role USER not found"));
 
 	    UserEntity newUser = new UserEntity();
 	    newUser.setUsername(registerDto.getUsername());
@@ -115,19 +116,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	    newUser.setAccountNoExpired(true);
 	    newUser.setAccountNoLocked(true);
 	    newUser.setCredentialNoExpired(true);
-		newUser.setRoles(Set.of(roleUser));
+	    newUser.setRoles(Set.of(roleUser));
 
 	    userRepository.save(newUser);
 
-	    // Autenticar directamente al usuario recién registrado
+	    // Autenticación tras registro
 	    Authentication authentication = authenticate(registerDto.getUsername(), registerDto.getPassword());
 	    SecurityContextHolder.getContext().setAuthentication(authentication);
 
-	    String token = jwtTokenProvider.generateToken(authentication);
-		UserEntity user = userRepository.findUserEntityByUsername(registerDto.getUsername())
-			    .orElseThrow(() -> new UsernameNotFoundException("User not found"));	
+	    String accessToken = jwtTokenProvider.generateToken(authentication);
+	    RefreshToken refreshToken = refreshTokenService.createRefreshToken(newUser.getUserId());
 
-	    return new AuthResponseDto(token, null, user.getUserId());
+	    return new AuthResponseDto(
+	        accessToken,
+	        refreshToken.getToken(),
+	        null, // scrapYardId solo si se registra como desguace
+	        newUser.getUserId()
+	    );
 	}
 	
 }

@@ -23,7 +23,7 @@ import com.app.dtos.scrapyardpartsdto.ScrapYardPartsRequestDto;
 import com.app.service.ReservationServiceImpl;
 import com.app.service.ScrapYardServiceImpl;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/reservation")
 public class ReservationController {

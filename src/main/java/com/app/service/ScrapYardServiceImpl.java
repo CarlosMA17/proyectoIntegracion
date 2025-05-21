@@ -76,8 +76,8 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	}
 	
 	@Override
-	public List<ScrapYardPartsResponseDto> getPartBySubcategoryId(Long partId) {
-		List<ScrapYardParts> parts =  scrapYardPartsRepository.findByPartId_PartIdAndReservedFalse(partId);
+	public List<ScrapYardPartsResponseDto> getPartBySubcategoryIdAndCarId(Long partId, Long carId) {
+		List<ScrapYardParts> parts =  scrapYardPartsRepository.findByPartId_PartIdAndCar_CarIdAndReservedFalse(partId, carId);
 		return parts.stream()
 								.map(scrapYardPartsMapper::toResponse)
 								.collect(Collectors.toList());

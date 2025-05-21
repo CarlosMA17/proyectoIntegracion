@@ -37,7 +37,7 @@ public class ScrapYardController {
 
 	private static final String PART_RESOURCE = "/scrapyardparts";
 	private static final String PART_SY_ID_PATH = PART_RESOURCE + "/scrapyards/{scrapYardId}";
-	private static final String PART_PART_ID_PATH = PART_RESOURCE + "/{partId}";
+	private static final String PART_PART_ID_PATH = PART_RESOURCE + "/{partId}/{carId}";
 	private static final String PART_RESERVATION_PATH = PART_RESOURCE + "/scrapyards/reservation/{scrapYardPartId}";
 	private static final String PART_DELETE_PATH = PART_RESOURCE + "/scrapyards/delete/{scrapYardPartId}";
 	private static final String SCRAPYARD_PART_ID_PATH = "/scrapyards/bypartid/{scrapYardPartId}";
@@ -66,12 +66,13 @@ public class ScrapYardController {
     }
 
 	/**
-	 *  GET PART BY SUBCATEGORY ID
+	 *  GET PART BY SUBCATEGORY ID AND CAR ID
 	 * @param partName
 	 */
 	@GetMapping(value = PART_PART_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartBySubcategoryId(@PathVariable Long partId) {		
-		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartBySubcategoryId(partId);
+	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartBySubcategoryId(@PathVariable Long partId, 
+																								  @PathVariable Long carId) {		
+		List<ScrapYardPartsResponseDto> parts = scrapYardService.getPartBySubcategoryIdAndCarId(partId, carId);
 		
 		ApiResponseDto<List<ScrapYardPartsResponseDto>> response = new ApiResponseDto<>("Book fetched successfully",
 				HttpStatus.OK.value(), parts);
