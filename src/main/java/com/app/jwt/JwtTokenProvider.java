@@ -43,12 +43,13 @@ public class JwtTokenProvider {
                 .stream()
                 .map(auth -> auth.getName())
                 .toList();
+	    
 		
 		return Jwts.builder()
 				   .subject(username)
 		           .claim("roles", roles)
 		           .claim("userId", user.getUserId())
-		           .claim("scrapYardId", user.getScrapYard().getScrapYardId())
+		           .claim("scrapYardId", (user.getScrapYard() != null) ? user.getScrapYard().getScrapYardId().toString() : null)
 				   .issuedAt(new Date())
 				   .expiration(expireDate)
 				   .signWith(getSignInKey(), Jwts.SIG.HS256)
@@ -65,12 +66,13 @@ public class JwtTokenProvider {
                 .stream()
                 .map(auth -> auth.getName())
                 .toList();
+	    
 
 	    return Jwts.builder()
 	               .subject(username)
 		           .claim("roles", roles)
 		           .claim("userId", user.getUserId())
-		           .claim("scrapYardId", user.getScrapYard().getScrapYardId())
+		           .claim("scrapYardId", (user.getScrapYard() != null) ? user.getScrapYard().getScrapYardId().toString() : null)
 	               .issuedAt(currentDate)
 	               .expiration(expireDate)
 	               .signWith(getSignInKey(), Jwts.SIG.HS256)
