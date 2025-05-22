@@ -32,6 +32,10 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	@Transactional
 	public ReservationResponseDto createReservation(ReservationRequestDto reservationRequestDto) {
+		
+		if (reservationRepository.findByScrapYardPart_ScrapYard_ScrapYardId(reservationRequestDto.getScrapYardPartId()) != null) {
+			throw new ResourceNotFoundException("ScrapYardPart already reserved");
+		}
 
 	    UserEntity user = userRepository.findById(reservationRequestDto.getUserId())
 	            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + reservationRequestDto.getUserId()));
@@ -43,10 +47,8 @@ public class ReservationServiceImpl implements ReservationService {
 	    reservation.setUser(user);
 	    reservation.setScrapYardPart(part);
 
-	    // Guardar primero la reserva (ella no depende de que la pieza tenga reservation todavía)
 	    Reservation savedReservation = reservationRepository.save(reservation);
 
-	    // Ahora actualizar la pieza con la reserva
 	    part.setReservation(savedReservation);
 	    part.setReserved(true);
 	    scrapYardPartsRepository.save(part);

@@ -113,17 +113,17 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	public void addPart(ScrapYardPartsRequestDto scrapYardPartRequestDto) {
 		
 		ScrapYard scrapYard = scrapYardRepository.findById(scrapYardPartRequestDto.getScrapYardId())
-			    .orElseThrow(() -> new RuntimeException("ScrapYard no encontrado"));
+			    .orElseThrow(() -> new ResourceNotFoundException("ScrapYard no encontrado"));
 		
 		Car car = carRepository.findById(scrapYardPartRequestDto.getCarId())
-			    .orElseThrow(() -> new RuntimeException("Car no encontrado"));
+			    .orElseThrow(() -> new ResourceNotFoundException("Car no encontrado"));
 		
 		Part part = partRepository.findByName(scrapYardPartRequestDto.getPartName())
 				.orElseGet(() -> {
 					Part newPart = new Part();
 					
 					PartCategory category = categoryRepository.findById(scrapYardPartRequestDto.getCategoryId())
-							.orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
+							.orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada"));
 					
 					List<Part> parts = car.getParts();
 					if (parts == null) {
