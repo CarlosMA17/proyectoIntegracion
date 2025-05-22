@@ -12,4 +12,6 @@ import com.app.entity.UserEntity;
 public interface UserRepository  extends JpaRepository<UserEntity, Long>{
 
 	Optional<UserEntity> findUserEntityByUsername(String name);
+
+	UserEntity getByUsername(String username);
 }

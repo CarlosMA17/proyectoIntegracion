@@ -62,6 +62,15 @@ public class LoadDatabase {
 			scrapyardPolo.setLatitude(28.447994931901405);
 			scrapyardPolo.setLongitude(-16.289774766054297);
 			
+			ScrapYard scrapyardPepe = new ScrapYard();
+			scrapyardPepe.setName("desguaces Pepe");
+			scrapyardPepe.setLocation("taco");
+			scrapyardPepe.setNumber("609 785 878");
+			scrapyardPepe.setSchudle("Lunes a Viernes de 08:00 a 18:00");
+			scrapyardPepe.setLatitude(28.447994931901405);
+			scrapyardPepe.setLongitude(-16.289774766054297);
+			
+			scrapYardRepository.save(scrapyardPepe);
 			scrapYardRepository.save(scrapyardPolo);
 			
 			UserEntity userAndres = UserEntity.builder()
@@ -74,9 +83,21 @@ public class LoadDatabase {
 											  .accountNoLocked(true)
 											  .credentialNoExpired(true)
 											  .roles(Set.of(roleDevelop))
+											  .build();		
+			
+			UserEntity userPepe = UserEntity.builder()
+											  .username("Pepe")
+											  .scrapYard(new ScrapYard())
+											  .scrapYard(scrapyardPepe)
+											  .password("$2a$10$3S84.aE5GAxLMeXyDUFkruNnoQVE/UOM6iY35vtwirheoBfl7B9qC")
+											  .isEnabled(true)
+											  .accountNoExpired(true)
+											  .accountNoLocked(true)
+											  .credentialNoExpired(true)
+											  .roles(Set.of(roleDevelop))
 											  .build();
 			
-			userRepository.saveAll(List.of(userAlex, userJose, userAndres));
+			userRepository.saveAll(List.of(userPepe, userAndres));
 		};
 	}
 }

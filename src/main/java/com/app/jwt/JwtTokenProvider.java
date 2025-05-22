@@ -6,11 +6,14 @@ import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.app.entity.Role;
+import com.app.entity.UserEntity;
+import com.app.repository.UserRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -23,6 +26,9 @@ public class JwtTokenProvider {
 	@Value("${security.jwt.key.private}")
 	private String privateKey;
 	
+	@Autowired
+	UserRepository userRepository;
+	
 	private static final long JWT_EXPIRATION_DATE = 60000;  // milisegundos ; 1h = 3600s
 	
 	public String generateToken(Authentication authentication) {
@@ -30,14 +36,19 @@ public class JwtTokenProvider {
 		Date currentDate = new Date();
 		Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION_DATE);
 		
-		List<String> roles = authentication.getAuthorities()
+	    UserEntity user = userRepository.getByUsername(username);
+
+		
+	    List<String> roles = user.getRoles()
                 .stream()
-                .map(auth -> auth.getAuthority())
+                .map(auth -> auth.getName())
                 .toList();
 		
 		return Jwts.builder()
 				   .subject(username)
 		           .claim("roles", roles)
+		           .claim("userId", user.getUserId())
+		           .claim("scrapYardId", user.getScrapYard().getScrapYardId())
 				   .issuedAt(new Date())
 				   .expiration(expireDate)
 				   .signWith(getSignInKey(), Jwts.SIG.HS256)
@@ -47,9 +58,19 @@ public class JwtTokenProvider {
 	public String generateToken(String username) {
 	    Date currentDate = new Date();
 	    Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION_DATE);
+	    
+	    UserEntity user = userRepository.getByUsername(username);
+	    
+	    List<String> roles = user.getRoles()
+                .stream()
+                .map(auth -> auth.getName())
+                .toList();
 
 	    return Jwts.builder()
 	               .subject(username)
+		           .claim("roles", roles)
+		           .claim("userId", user.getUserId())
+		           .claim("scrapYardId", user.getScrapYard().getScrapYardId())
 	               .issuedAt(currentDate)
 	               .expiration(expireDate)
 	               .signWith(getSignInKey(), Jwts.SIG.HS256)

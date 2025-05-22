@@ -68,7 +68,7 @@ public class AuthController {
         Cookie refreshCookie = new Cookie("refreshToken", authResponse.getRefreshToken());
         refreshCookie.setHttpOnly(true);
         refreshCookie.setSecure(false); // solo si estás en HTTPS
-        refreshCookie.setPath("/api/auth/refresh-token");
+        refreshCookie.setPath("/");
         refreshCookie.setMaxAge(7 * 24 * 60 * 60); // 7 días
 
         response.addCookie(refreshCookie);
@@ -83,9 +83,18 @@ public class AuthController {
     }
     
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletResponse response, @CookieValue(value = "refreshToken", required = false) String token) {
-        if (token != null) {
-            refreshTokenService.deleteByToken(token);
+    public ResponseEntity<?> logout(HttpServletResponse response, @CookieValue(value = "refreshToken", required = false) String refreshToken) {
+    	
+    	System.out.println(refreshToken);
+    	System.out.println(refreshToken);
+    	System.out.println(refreshToken);
+    	System.out.println(refreshToken);
+    	System.out.println(refreshToken);
+    	System.out.println(refreshToken);
+    	System.out.println(refreshToken);
+    	System.out.println(refreshToken);
+        if (refreshToken != null) {
+            refreshTokenService.deleteByToken(refreshToken);
         }
 
         Cookie cookie = new Cookie("refreshToken", null);
@@ -99,7 +108,23 @@ public class AuthController {
     }
 	
 	@PostMapping("/register")
-	public ResponseEntity<AuthResponseDto> register(@RequestBody AuthLoginRequestDto loginRequest){
-		return new ResponseEntity<>(userDetailsService.register(loginRequest), HttpStatus.OK);
+	public ResponseEntity<AuthResponseDto> register(@RequestBody AuthLoginRequestDto loginRequest,  HttpServletResponse response){
+		AuthResponseDto authResponse = userDetailsService.register(loginRequest);
+		
+		Cookie refreshCookie = new Cookie("refreshToken", authResponse.getRefreshToken());
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setSecure(true); // solo si estás en HTTPS
+        refreshCookie.setPath("/");
+        refreshCookie.setMaxAge(7 * 24 * 60 * 60); // 7 días
+
+        response.addCookie(refreshCookie);
+
+        // devolvés solo el accessToken y los datos públicos
+        return ResponseEntity.ok(new AuthResponseDto(
+            authResponse.getAccessToken(),
+            null,
+            authResponse.getScrapYardId(),
+            authResponse.getUserId()
+        ));
 	}
 }
