@@ -21,4 +21,6 @@ public interface ReservationRepository  extends JpaRepository<Reservation, Long>
 	void deleteByScrapYardPart(Long scrapYardPartId);
     
 	List<Reservation> findByScrapYardPart_ScrapYard_ScrapYardId(Long scrapYardId);
+
+	Reservation findByScrapYardPart_ScrapYardPartId(Long scrapYardPartId);
 }

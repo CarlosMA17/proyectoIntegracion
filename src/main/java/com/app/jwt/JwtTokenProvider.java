@@ -56,28 +56,7 @@ public class JwtTokenProvider {
 				   .compact();
 	}
 	
-	public String generateToken(String username) {
-	    Date currentDate = new Date();
-	    Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION_DATE);
-	    
-	    UserEntity user = userRepository.getByUsername(username);
-	    
-	    List<String> roles = user.getRoles()
-                .stream()
-                .map(auth -> auth.getName())
-                .toList();
-	    
 
-	    return Jwts.builder()
-	               .subject(username)
-		           .claim("roles", roles)
-		           .claim("userId", user.getUserId())
-		           .claim("scrapYardId", (user.getScrapYard() != null) ? user.getScrapYard().getScrapYardId().toString() : null)
-	               .issuedAt(currentDate)
-	               .expiration(expireDate)
-	               .signWith(getSignInKey(), Jwts.SIG.HS256)
-	               .compact();
-	}
 	
 	private SecretKey getSignInKey() {
 		

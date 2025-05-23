@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,7 @@ import com.app.entity.Role;
 import com.app.entity.UserEntity;
 import com.app.dtos.auth.AuthLoginRequestDto;
 import com.app.dtos.auth.AuthResponseDto;
+import com.app.dtos.auth.JwtResponseDto;
 import com.app.exception.ResourceNotFoundException;
 import com.app.jwt.JwtTokenProvider;
 import com.app.repository.RoleRepository;
@@ -99,6 +101,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	    }
 
 	    return new AuthResponseDto(accessToken, refreshToken.getToken(), scrapYardId, user.getUserId());
+	}
+	
+	public String refreshToken(UserEntity user) {
+		
+	    UserDetails userDetails = this.loadUserByUsername(user.getUsername());
+	    Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), null, userDetails.getAuthorities());;
+
+	    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+	    String newAccessToken = jwtTokenProvider.generateToken(authentication);
+
+        return newAccessToken;
+
 	}
 	
 	public AuthResponseDto register(AuthLoginRequestDto registerDto) {

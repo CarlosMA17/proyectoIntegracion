@@ -33,27 +33,30 @@ public class ReservationServiceImpl implements ReservationService {
 	@Transactional
 	public ReservationResponseDto createReservation(ReservationRequestDto reservationRequestDto) {
 		
-		if (reservationRepository.findByScrapYardPart_ScrapYard_ScrapYardId(reservationRequestDto.getScrapYardPartId()) != null) {
+		
+		if (reservationRepository.findByScrapYardPart_ScrapYardPartId(reservationRequestDto.getScrapYardPartId()) != null) {
 			throw new ResourceNotFoundException("ScrapYardPart already reserved");
+		} else {
+			
+			UserEntity user = userRepository.findById(reservationRequestDto.getUserId())
+					.orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + reservationRequestDto.getUserId()));
+			
+			ScrapYardParts part = scrapYardPartsRepository.findById(reservationRequestDto.getScrapYardPartId())
+					.orElseThrow(() -> new ResourceNotFoundException("ScrapYardPart not found with id: " + reservationRequestDto.getScrapYardPartId()));
+			
+			Reservation reservation = reservationMapper.toEntity(reservationRequestDto);
+			reservation.setUser(user);
+			reservation.setScrapYardPart(part);
+			
+			Reservation savedReservation = reservationRepository.save(reservation);
+			
+			part.setReservation(savedReservation);
+			part.setReserved(true);
+			scrapYardPartsRepository.save(part);
+			
+			return reservationMapper.toResponse(savedReservation);
 		}
 
-	    UserEntity user = userRepository.findById(reservationRequestDto.getUserId())
-	            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + reservationRequestDto.getUserId()));
-
-	    ScrapYardParts part = scrapYardPartsRepository.findById(reservationRequestDto.getScrapYardPartId())
-	            .orElseThrow(() -> new ResourceNotFoundException("ScrapYardPart not found with id: " + reservationRequestDto.getScrapYardPartId()));
-
-	    Reservation reservation = reservationMapper.toEntity(reservationRequestDto);
-	    reservation.setUser(user);
-	    reservation.setScrapYardPart(part);
-
-	    Reservation savedReservation = reservationRepository.save(reservation);
-
-	    part.setReservation(savedReservation);
-	    part.setReserved(true);
-	    scrapYardPartsRepository.save(part);
-
-	    return reservationMapper.toResponse(savedReservation);
 	}
 
 	@Override

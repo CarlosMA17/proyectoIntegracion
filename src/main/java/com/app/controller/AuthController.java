@@ -6,6 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +58,8 @@ public class AuthController {
             .map(refreshTokenService::verifyExpiration)
             .map(RefreshToken::getUser)
             .map(user -> {
-                String newAccessToken = jwtTokenProvider.generateToken(user.getUsername());
+            	String newAccessToken = userDetailsService.refreshToken(user);
+
                 return ResponseEntity.ok(new JwtResponseDto(newAccessToken, requestRefreshToken));
             })
             .orElseGet(() -> ResponseEntity
@@ -100,7 +106,7 @@ public class AuthController {
         Cookie cookie = new Cookie("refreshToken", null);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setPath("/api/auth/refresh-token");
+        cookie.setPath("/");
         cookie.setMaxAge(0); // borrar
 
         response.addCookie(cookie);
