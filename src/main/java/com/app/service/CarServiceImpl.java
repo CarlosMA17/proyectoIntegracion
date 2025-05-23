@@ -12,12 +12,21 @@ import com.app.entity.Car;
 import com.app.mappers.car.CarMapper;
 import com.app.repository.CarRepository;
 
+/**
+ * Service implementation for handling car-related operations.
+ * Provides business logic for retrieving car data from the database and mapping it to DTOs.
+ */
 @Service
 public class CarServiceImpl implements CarService {
 	
 	@Autowired CarRepository carRepository;
 	@Autowired CarMapper carMapper;
 
+    /**
+     * Retrieves all cars from the database and maps them to response DTOs.
+     *
+     * @return List of CarResponseDto containing brand, model, and engine information
+     */
 	@Override
 	public List<CarResponseDto> getAllCars() {
 		List<Car> cars =  carRepository.findAll();
@@ -26,9 +35,4 @@ public class CarServiceImpl implements CarService {
 				.collect(Collectors.toList());
 	}
 
-	@Override
-	public List<MotorResponseDto> getAllMotors() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

@@ -14,12 +14,22 @@ import com.app.mappers.scrapyardparts.ScrapYardPartsMapper;
 import com.app.repository.CategoryRepository;
 import com.app.repository.WriterRepository;
 
+/**
+ * Service implementation for handling category-related operations.
+ * Responsible for retrieving part categories based on car or globally, and converting them to DTOs.
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired CategoryRepository categoryRepository;
 	@Autowired CategoryMapper categoryMapper;
 	
+    /**
+     * Retrieves all categories that are associated with a specific car ID.
+     *
+     * @param carId the ID of the car
+     * @return List of CategoryResponseDto representing the categories available for that car
+     */
 	@Override
 	public List<CategoryResponseDto> getAllCategoriesByCar(Long carId) {
 		List<PartCategory> categories =  categoryRepository.findByCar(carId);
@@ -28,6 +38,11 @@ public class CategoryServiceImpl implements CategoryService {
 								.collect(Collectors.toList());
 	}
 	
+    /**
+     * Retrieves all available part categories from the system.
+     *
+     * @return List of CategoryResponseDto representing all categories
+     */
 	@Override
 	public List<CategoryResponseDto> getAllCategories() {
 		List<PartCategory> categories =  categoryRepository.findAll();

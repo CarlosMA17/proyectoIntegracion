@@ -18,6 +18,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * JWT authentication filter that intercepts all incoming requests once,
+ * checks for a valid JWT token in the Authorization header, and sets
+ * the user authentication in the security context if the token is valid.
+ */
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 	@Autowired
@@ -26,6 +31,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
 	
+    /**
+     * Extracts the JWT token from the Authorization header of the request.
+     *
+     * @param request the HTTP request
+     * @return the token string if present and well-formed, null otherwise
+     */
 	private String getTokenFromRequest(HttpServletRequest request) {
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
@@ -34,6 +45,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		return null;
 	}
 	
+    /**
+     * Main filtering logic executed for each request.
+     * If a valid JWT token is found, it sets the user authentication in the Spring Security context.
+     *
+     * @param request the HTTP request
+     * @param response the HTTP response
+     * @param filterChain the filter chain
+     * @throws ServletException
+     * @throws IOException
+     */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 	        throws ServletException, IOException {
@@ -51,11 +72,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 	        }
 	    } catch (io.jsonwebtoken.ExpiredJwtException e) {
-	        // Token expirado → deja que el frontend maneje esto con un 401
 	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 	        return;
 	    } catch (Exception e) {
-	        // Otros errores (mal formado, firma incorrecta, etc.)
 	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 	        return;
 	    }

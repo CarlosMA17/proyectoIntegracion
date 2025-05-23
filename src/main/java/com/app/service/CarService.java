@@ -8,7 +8,4 @@ import com.app.dtos.carsdtos.MotorResponseDto;
 public interface CarService {
 	
 	List<CarResponseDto> getAllCars();
-	List<MotorResponseDto> getAllMotors();
-
-
 }

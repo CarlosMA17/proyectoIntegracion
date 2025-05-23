@@ -48,11 +48,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private RefreshTokenServiceImpl refreshTokenService;
 	
+    /**
+     * Maps a set of Role entities to a collection of Spring Security GrantedAuthority.
+     *
+     * @param roles the set of Role entities
+     * @return a collection of GrantedAuthority objects
+     */
 	public Collection<GrantedAuthority> mapToAuthorities(Set<Role> roles) {
 		return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_".concat(role.getName())))
 																			.collect(Collectors.toList());
 	}
-	
+
+    /**
+     * Loads a user from the database by username and returns a Spring Security UserDetails object.
+     * This method is used internally by Spring Security during authentication.
+     *
+     * @param username the username to look up
+     * @return a UserDetails object with user credentials and authorities
+     * @throws UsernameNotFoundException if the user is not found
+     */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
@@ -72,6 +86,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 						);
 	}
 
+
+    /**
+     * Authenticates a user by comparing the raw password with the encoded one in the database.
+     *
+     * @param username the username to authenticate
+     * @param password the raw password to check
+     * @return an Authentication object if successful
+     * @throws BadCredentialsException if credentials are invalid
+     */
 	private Authentication authenticate(String username, String password) {
 		System.out.println("authenticate -->" + username);
 		UserDetails userDetails = this.loadUserByUsername(username);
@@ -83,6 +106,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
 	}
 	
+    /**
+     * Handles the login logic:
+     * - Authenticates the user
+     * - Generates JWT access token
+     * - Creates a refresh token
+     * - Returns both in an AuthResponseDto
+     *
+     * @param authLoginRequest DTO with login credentials
+     * @return AuthResponseDto with access token, refresh token, scrapYardId (if applicable), and userId
+     */
 	public AuthResponseDto login(AuthLoginRequestDto authLoginRequest) {
 	    Authentication authentication = this.authenticate(authLoginRequest.getUsername(), authLoginRequest.getPassword());
 
@@ -103,6 +136,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	    return new AuthResponseDto(accessToken, refreshToken.getToken(), scrapYardId, user.getUserId());
 	}
 	
+    /**
+     * Refreshes the access token for a valid, authenticated user.
+     *
+     * @param user the UserEntity object
+     * @return a new JWT access token
+     */
 	public String refreshToken(UserEntity user) {
 		
 	    UserDetails userDetails = this.loadUserByUsername(user.getUsername());
@@ -116,6 +155,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 	}
 	
+    /**
+     * Registers a new user:
+     * - Validates that the username is not taken
+     * - Encodes the password
+     * - Assigns a default role
+     * - Saves the user
+     * - Authenticates and returns tokens
+     *
+     * @param registerDto DTO with username and password
+     * @return AuthResponseDto with access and refresh token
+     */
 	public AuthResponseDto register(AuthLoginRequestDto registerDto) {
 	    if (userRepository.findUserEntityByUsername(registerDto.getUsername()).isPresent()) {
 	        throw new RuntimeException("Username is already taken");
@@ -145,7 +195,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	    return new AuthResponseDto(
 	        accessToken,
 	        refreshToken.getToken(),
-	        null, // scrapYardId solo si se registra como desguace
+	        null, // scrapYardId, nunca se registrara un usuario como desguace, se añade manualmente por codigo
 	        newUser.getUserId()
 	    );
 	}

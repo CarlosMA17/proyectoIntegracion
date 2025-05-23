@@ -34,7 +34,10 @@ import com.app.repository.WriterRepository;
 
 import jakarta.transaction.Transactional;
 
-
+/**
+ * Service implementation for managing scrapyard operations.
+ * Handles logic for retrieving, adding, updating, deleting, and restoring parts within a scrapyard.
+ */
 @Service
 public class ScrapYardServiceImpl implements ScrapYardService {
 	
@@ -52,7 +55,12 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	@Autowired ScrapYardPartsMapper scrapYardPartsMapper;
 	@Autowired ScrapYardMapper scrapYardMapper;
 
-
+	/**
+	 * Retrieves all parts associated with a specific scrap yard.
+	 *
+	 * @param scrapyardId ID of the scrap yard
+	 * @return list of ScrapYardPartsResponseDto
+	 */
 	@Override
 	public List<ScrapYardPartsResponseDto> getAllPartsBySY(Long scrapyardId) {
 		
@@ -61,10 +69,15 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 
 		return scrapYardParts.stream()
 								.map(scrapYardPartsMapper::toResponse)
-								.collect(Collectors.toList());
-		
+								.collect(Collectors.toList());	
 	}
 
+	/**
+	 * Retrieves parts whose name starts with the given text.
+	 *
+	 * @param partName partial name of the part
+	 * @return list of matching ScrapYardPartsResponseDto
+	 */
 	@Override
 	public List<ScrapYardPartsResponseDto> getPartByName(String partName) {
 		
@@ -75,6 +88,13 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 				.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Retrieves available (not reserved) parts by subcategory and car ID.
+	 *
+	 * @param partId subcategory (part) ID
+	 * @param carId  car ID
+	 * @return list of matching parts
+	 */
 	@Override
 	public List<ScrapYardPartsResponseDto> getPartBySubcategoryIdAndCarId(Long partId, Long carId) {
 		List<ScrapYardParts> parts =  scrapYardPartsRepository.findByPartId_PartIdAndCar_CarIdAndReservedFalse(partId, carId);
@@ -83,6 +103,12 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 								.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Retrieves the scrapyard that owns a specific part.
+	 *
+	 * @param scrapYardPartId ID of the part
+	 * @return ScrapYardResponseDto with scrapyard info
+	 */
 	@Override
 	public ScrapYardResponseDto getScrapYardByPartId(Long scrapYardPartId) {
 		ScrapYardParts part = scrapYardPartsRepository.findById(scrapYardPartId)
@@ -93,7 +119,12 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 	        return scrapYardMapper.toResponse(scrapYard);
 	}
 
-	
+	/**
+	 * Retrieves a ScrapYard entity by its ID.
+	 *
+	 * @param idEntity scrapyard ID
+	 * @return ScrapYard entity
+	 */
 	@Override
 	public ScrapYard findById(Long idEntity) {
 		
@@ -103,12 +134,22 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		        .orElseThrow(() -> new RuntimeException("Desguace no encontrado"));	
 	}
 	
+	/**
+	 * Deletes a part from the scrapyard inventory.
+	 *
+	 * @param scrapYardPartId ID of the part to delete
+	 */
 	@Override
 	public void deletePart(Long scrapYardPartId) {
 
         scrapYardPartsRepository.deleteById(scrapYardPartId);
 	}
 
+	/**
+	 * Adds a new part to the scrapyard. If the part does not exist, it is created and linked to the car and category.
+	 *
+	 * @param scrapYardPartRequestDto details of the part to add
+	 */
 	@Override
 	public void addPart(ScrapYardPartsRequestDto scrapYardPartRequestDto) {
 		
@@ -150,6 +191,11 @@ public class ScrapYardServiceImpl implements ScrapYardService {
         scrapYardPartsRepository.save(scrapYardPart);
 	}
 	
+	/**
+	 * Restores a reserved part (makes it available again) and deletes the associated reservation.
+	 *
+	 * @param scrapYardPartId ID of the reserved part
+	 */
 	@Override
 	public void restockScrapYardPart(Long scrapYardPartId) {
 		
@@ -170,6 +216,11 @@ public class ScrapYardServiceImpl implements ScrapYardService {
 		
 	}
 	
+	/**
+	 * Updates information of an existing part in the scrapyard.
+	 *
+	 * @param scrapYardPart data to update the part
+	 */
 	@Override
 	public void updatePart(ScrapYardPartsRequestDto scrapYardPart) {
 		

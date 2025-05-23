@@ -20,6 +20,10 @@ import com.app.repository.ReservationRepository;
 import com.app.repository.ScrapYardPartsRepository;
 import com.app.repository.UserRepository;
 
+/**
+ * Service implementation for handling reservation logic.
+ * Responsible for creating, retrieving, and cancelling part reservations.
+ */
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
@@ -29,6 +33,13 @@ public class ReservationServiceImpl implements ReservationService {
 	@Autowired ReservationMapper reservationMapper;
 	@Autowired ScrapYardPartsMapper scrapYardPartsMapper;
 
+    /**
+     * Creates a reservation for a given scrap yard part and user.
+     * Ensures that the part is not already reserved before proceeding.
+     *
+     * @param reservationRequestDto the request DTO containing userId and scrapYardPartId
+     * @return the created ReservationResponseDto
+     */
 	@Override
 	@Transactional
 	public ReservationResponseDto createReservation(ReservationRequestDto reservationRequestDto) {
@@ -59,6 +70,12 @@ public class ReservationServiceImpl implements ReservationService {
 
 	}
 
+    /**
+     * Retrieves all reservations for a given user ID.
+     *
+     * @param userId the ID of the user
+     * @return list of ReservationResponseDto objects
+     */
 	@Override
 	public List<ReservationResponseDto> getAllReservations(Long userId) {
 
@@ -78,6 +95,12 @@ public class ReservationServiceImpl implements ReservationService {
 		return reservations;
 	}
 	
+    /**
+     * Cancels an existing reservation by ID.
+     * Unlinks the reservation from the part and marks it as available.
+     *
+     * @param reservationId the ID of the reservation to cancel
+     */
 	@Override
 	@Transactional
 	public void cancelReservation(Long reservationId) {
@@ -98,6 +121,12 @@ public class ReservationServiceImpl implements ReservationService {
 	    reservationRepository.deleteById(reservationId);
 	}
 	
+    /**
+     * Retrieves all reservations associated with a specific scrap yard.
+     *
+     * @param scrapYardId the ID of the scrap yard
+     * @return list of ReservationResponseDto objects
+     */
 	@Override
 	public List<ReservationResponseDto> getAllReservationsByScrapYard(Long scrapYardId) {
 
