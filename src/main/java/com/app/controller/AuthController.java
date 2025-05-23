@@ -31,6 +31,13 @@ import com.app.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.Parameter;
+
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/auth")
@@ -48,6 +55,15 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Operation(
+            summary = "Refresh access token",
+            description = "Generates a new access token using the refresh token stored in the HttpOnly cookie."
+        )
+        @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Access token successfully refreshed"),
+            @ApiResponse(responseCode = "401", description = "Refresh token not found in cookie"),
+            @ApiResponse(responseCode = "403", description = "Refresh token invalid or expired")
+        })
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshToken(@CookieValue(value = "refreshToken", required = false) String requestRefreshToken) {
         if (requestRefreshToken == null) {
@@ -67,6 +83,14 @@ public class AuthController {
             	    .body(new JwtResponseDto(null, null)));    
        }
 	
+    @Operation(
+         summary = "User login",
+         description = "Authenticates a user and returns a JWT access token in the body and a refresh token in a secure cookie."
+    )
+		@ApiResponses(value = {
+		    @ApiResponse(responseCode = "200", description = "Login successful"),
+		    @ApiResponse(responseCode = "401", description = "Invalid credentials")
+     })
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody AuthLoginRequestDto loginRequest, HttpServletResponse response) {
         AuthResponseDto authResponse = userDetailsService.login(loginRequest);
@@ -88,6 +112,13 @@ public class AuthController {
         ));
     }
     
+    @Operation(
+            summary = "Logout user",
+            description = "Deletes the refresh token from the database and removes the cookie from the browser."
+        )
+        @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Logout successful")
+        })
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response, @CookieValue(value = "refreshToken", required = false) String refreshToken) {
     	
@@ -113,6 +144,14 @@ public class AuthController {
         return ResponseEntity.ok("Sesión cerrada correctamente.");
     }
 	
+    @Operation(
+            summary = "Register new user",
+            description = "Registers a new user and returns an access token and refresh token in a secure cookie."
+        )
+        @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User registered successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid registration data or user already exists")
+        })
 	@PostMapping("/register")
 	public ResponseEntity<AuthResponseDto> register(@RequestBody AuthLoginRequestDto loginRequest,  HttpServletResponse response){
 		AuthResponseDto authResponse = userDetailsService.register(loginRequest);

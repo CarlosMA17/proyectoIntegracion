@@ -2,6 +2,13 @@ package com.app.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +40,17 @@ public class CategoryController {
 	 *  GET ALL CATEGORIES BY CAR
 	 *  @param carID
 	 */
+	 @Operation(
+		        summary = "Get all categories by car ID",
+	    description = "Returns a list of all part categories available for a given car."
+	)
+	@ApiResponses(value = {
+	    @ApiResponse(responseCode = "200", description = "Categories fetched successfully",
+	        content = @Content(mediaType = "application/json",
+	            schema = @Schema(implementation = ApiResponseDto.class))),
+	    @ApiResponse(responseCode = "404", description = "Car ID not found"),
+	    @ApiResponse(responseCode = "500", description = "Internal server error")
+	})
 	@GetMapping(value = CATEGORY_CAR, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<ApiResponseDto<List<CategoryResponseDto>>> getAllCategoriesByCar(@PathVariable long carId) {
 		List<CategoryResponseDto> categories = categoryService.getAllCategoriesByCar(carId);
@@ -46,6 +64,16 @@ public class CategoryController {
 	 *  GET ALL CATEGORIES
 	 *  @param carID
 	 */
+	 @Operation(
+		        summary = "Get all categories",
+		        description = "Returns a list of all part categories available in the system."
+		    )
+		    @ApiResponses(value = {
+		        @ApiResponse(responseCode = "200", description = "Categories fetched successfully",
+		            content = @Content(mediaType = "application/json",
+		                schema = @Schema(implementation = ApiResponseDto.class))),
+		        @ApiResponse(responseCode = "500", description = "Internal server error")
+		    })
 	@GetMapping(value = CATEGORY_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<ApiResponseDto<List<CategoryResponseDto>>> getAllCategories() {
 		List<CategoryResponseDto> categories = categoryService.getAllCategories();

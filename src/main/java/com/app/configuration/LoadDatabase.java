@@ -97,7 +97,7 @@ public class LoadDatabase {
 											  .roles(Set.of(roleDevelop))
 											  .build();
 			
-			userRepository.saveAll(List.of(userPepe, userAndres));
+			userRepository.saveAll(List.of(userPepe, userAndres, userJose));
 		};
 	}
 }

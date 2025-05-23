@@ -2,6 +2,13 @@ package com.app.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +39,16 @@ public class CarController {
 	/**
 	 *  GET ALL CATEGORIES
 +	 */
+    @Operation(
+        summary = "Get all cars",
+        description = "Returns a list of all available cars in the system, each containing brand, model and engine information."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Cars retrieved successfully",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ApiResponseDto.class))),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
 	@GetMapping(value = CAR_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<ApiResponseDto<List<CarResponseDto>>> getAllBrands() {
 		List<CarResponseDto> brands = carService.getAllCars();

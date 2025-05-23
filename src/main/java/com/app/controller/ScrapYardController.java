@@ -2,6 +2,12 @@ package com.app.controller;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,6 +62,13 @@ public class ScrapYardController {
 	/**
 	 *  GET ALL PARTS
 	 */
+    @Operation(summary = "Get all parts by scrapyard ID", description = "Returns a list of parts available in a specific scrapyard.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Parts fetched successfully",
+            content = @Content(schema = @Schema(implementation = ScrapYardPartsResponseDto.class))),
+        @ApiResponse(responseCode = "404", description = "Scrapyard not found"),
+        @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
 	@GetMapping(value = PART_SY_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)	
 	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getAllPartsByScrapYard(@PathVariable Long scrapYardId) {
 
@@ -69,6 +82,11 @@ public class ScrapYardController {
 	 *  GET PART BY SUBCATEGORY ID AND CAR ID
 	 * @param partName
 	 */
+    @Operation(summary = "Get parts by subcategory and car", description = "Returns parts that match both the given subcategory ID and car ID.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Parts fetched successfully"),
+        @ApiResponse(responseCode = "404", description = "No matching parts found")
+    })
 	@GetMapping(value = PART_PART_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<List<ScrapYardPartsResponseDto>>> getPartBySubcategoryId(@PathVariable Long partId, 
 																								  @PathVariable Long carId) {		
@@ -85,6 +103,11 @@ public class ScrapYardController {
 	 * @param partId
 	 * @return
 	 */
+    @Operation(summary = "Get scrapyard by part ID", description = "Finds the scrapyard that owns a given part.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Scrapyard found successfully"),
+        @ApiResponse(responseCode = "404", description = "Scrapyard not found")
+    })
 	@GetMapping(value = SCRAPYARD_PART_ID_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<ScrapYardResponseDto>> getScrapYardByPartId(@PathVariable Long scrapYardPartId) {		
 		ScrapYardResponseDto parts = scrapYardService.getScrapYardByPartId(scrapYardPartId);
@@ -99,6 +122,11 @@ public class ScrapYardController {
 	 *  RESTOCK RESERVATION
 	 * @param partName
 	 */
+    @Operation(summary = "Restock a scrapyard part", description = "Restores stock of a part after reservation cancellation.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Restocked successfully"),
+        @ApiResponse(responseCode = "404", description = "Part not found")
+    })
 	@PutMapping(value = PART_RESERVATION_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Void>> restockScrapYardPart(@PathVariable Long scrapYardPartId) {	
 
@@ -112,6 +140,11 @@ public class ScrapYardController {
 	 *  UPDATE PART
 	 * @param partName
 	 */
+    @Operation(summary = "Update a scrapyard part", description = "Modifies data of a specific part in a scrapyard.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Updated successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid input data")
+    })
 	@PutMapping(value = UPDATE_PART, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<ApiResponseDto<Void>> updatePart(@RequestBody ScrapYardPartsRequestDto scrapyardPartsRequestDto) {	
 	    
@@ -124,6 +157,12 @@ public class ScrapYardController {
 	 *  DELETE PART BY SCRAPYARDPARTSiD
 	 * @param partName
 	 */
+    @Operation(summary = "Delete a part by ID", description = "Deletes a part from the scrapyard inventory.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Deleted successfully",
+            content = @Content(schema = @Schema(hidden = true))),
+        @ApiResponse(responseCode = "404", description = "Part not found")
+    })
 	@DeleteMapping(value = PART_DELETE_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> deletePart(@PathVariable Long scrapYardPartId) {		
 		scrapYardService.deletePart(scrapYardPartId);
@@ -137,6 +176,11 @@ public class ScrapYardController {
 	 * @param scrapyardPartsRequestDto
 	 * @return
 	 */
+    @Operation(summary = "Add a new part to a scrapyard", description = "Registers a new part in the scrapyard's stock.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Created successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid data provided")
+    })
 	@PostMapping(value = PART_RESOURCE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> addPart(@RequestBody ScrapYardPartsRequestDto scrapyardPartsRequestDto) {
 		System.out.println(scrapyardPartsRequestDto);
